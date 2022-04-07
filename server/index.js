@@ -7,6 +7,8 @@ const helmet= require("helmet")
 
 const PORT = 8000;
 
+const {getAds, getAd} = require("./scripts/handlers")
+
 express()
 
 // This will give us will log more info to the console. see https://www.npmjs.com/package/morgan
@@ -17,8 +19,9 @@ express()
 .use(express.static("public"))
 
 
-//Endpoints
-
+//Rest Endpoints
+.get("/api/ads", getAds)
+.get("/api/adDetails/:id", getAd)
 
 
 
