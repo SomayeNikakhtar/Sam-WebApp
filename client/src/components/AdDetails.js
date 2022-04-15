@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Loader from "./Loader";
 import Slideshow from "./Slideshow";
@@ -12,7 +12,9 @@ import MapModal from "./MapModal";
 const AdDetails= ()=>{
     const [adDetails, setAdDetails]=useState(null)
     const [showMap,setShowMap]=useState(false)
+    const History = useHistory();
     const {id}= useParams()
+
 
     useEffect(() => {
         fetch(`/api/adDetails/${id}`)
@@ -41,13 +43,12 @@ const AdDetails= ()=>{
                     <Price>${adDetails.price}</Price>
                 </FlexDiv>
                 <FlexDiv2>
-                    <p>{adDetails.location.city} - {adDetails.location.province} - {adDetails.location.postalCode}</p>
+                    <p>{adDetails.location.city} - {adDetails.location.streetNum}  {adDetails.location.streetName} -  {adDetails.location.postalCode}</p>
                     <Map onClick={()=> setShowMap(true)}>(View On Map)</Map>
                     {showMap && <MapModal onCloseFunc={()=>setShowMap(false)} center={[adDetails.location.lat, adDetails.location.lng]} />}
                 </FlexDiv2>
                 <Divider />
                     <button>Contact Info</button>
-                    <button>Chat</button>
                     <FiShare2></FiShare2>
                     <BsBookmark></BsBookmark>
                     
@@ -61,6 +62,7 @@ const AdDetails= ()=>{
                 <textarea placeholder="Your Message"></textarea>
                 <button>Send message</button>
             </Details2>
+            <Details3/>
         </Wrapper>
     );
 }
@@ -70,9 +72,13 @@ export default AdDetails;
 
 const Wrapper=styled.div`
 display: flex;
+flex-grow: 1;
+padding: 20px;
+
 /* flex-direction: column; */
 `
 const Details1= styled.div`
+    width: 60%;
 `;
 
 const Title= styled.h2`
@@ -108,5 +114,11 @@ const Description= styled.div`
 `;
 const Details2= styled.div`
     display: flex;
-flex-direction: column;
+    flex-direction: column;
+    width: 25%;
+
 `;
+const Details3=styled.div`
+    width: 15%;
+
+`
