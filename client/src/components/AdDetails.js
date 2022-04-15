@@ -4,8 +4,13 @@ import styled from "styled-components";
 import Slideshow from "./Slideshow";
 import { FiShare2,  } from "react-icons/fi";
 import { BsBookmark } from "react-icons/bs";
+import { BiBuildingHouse, BiBath } from "react-icons/bi";
+import { RiHotelBedLine } from "react-icons/ri";
+
+
 
 import MapModal from "./MapModal";
+import { AiOutlineWifi } from "react-icons/ai";
 
 
 const AdDetails= ()=>{
@@ -41,18 +46,103 @@ const AdDetails= ()=>{
                     <Title>{adDetails.title}</Title>
                     <Price>${adDetails.price}</Price>
                 </FlexDiv>
-                <FlexDiv2>
-                    <p>{adDetails.location.city} - {adDetails.location.streetNum}  {adDetails.location.streetName} -  {adDetails.location.postalCode}</p>
+                <div>
+                    <FlexDiv2>
+                    <p>{adDetails.city} - {adDetails.stNum}  {adDetails.stName} -  {adDetails.postalCode}</p>
                     <Map onClick={()=> setShowMap(true)}>(View On Map)</Map>
-                    {showMap && <MapModal onCloseFunc={()=>setShowMap(false)} center={[adDetails.location.lat, adDetails.location.lng]} />}
-                </FlexDiv2>
+                    {showMap && <MapModal onCloseFunc={()=>setShowMap(false)} center={[adDetails.lat, adDetails.lng]} />}
+                    </FlexDiv2>
+                    <FlexDiv2>
+                        <FlexDiv2>
+                            <BiBuildingHouse size="20"/>
+                            <p>{adDetails.unitType}</p>
+                        </FlexDiv2>
+                        <span>|</span>
+                        <FlexDiv2>
+                            <RiHotelBedLine size="20"/>
+                            <p>Bedrooms: {adDetails.bedrooms}</p>
+                        </FlexDiv2>
+                        <span>|</span>
+                        <FlexDiv2>
+                            <BiBath size="20"/>
+                            <p>Bathrooms: {adDetails.bathrooms}</p>
+                        </FlexDiv2>
+                    </FlexDiv2>
+                </div>
                 <Divider />
+                <div>
                     <button>Contact Info</button>
                     <FiShare2></FiShare2>
                     <BsBookmark></BsBookmark>
-                    
+                </div>
                 <Divider />
-                <Overview>Overview</Overview>
+                <Specification>
+                    <Overview>
+                        <H>Overview</H>
+                        <P>Utilities Included </P>
+                        { adDetails.utilities.hydro &&
+                            <><Span>Hydro </Span><br/></>
+                        }
+                        {adDetails.utilities.heat &&
+                            <><Span>Heat </Span><br/></>
+                        }
+                        {adDetails.utilities.water &&   
+                            <><Span>Water</Span><br/></>
+                        }
+                        {!adDetails.utilities.hydro && !adDetails.utilities.heat && !adDetails.utilities.water &&
+                            <><Span>Not Included</Span><br/></>
+                        }
+                        <P>Wi-Fi and More</P>
+                        {adDetails.utilities.tv &&
+                            <><Span>Tv(Cable)</Span><br/></>
+                        }
+                        {adDetails.utilities.internet &&
+                            <><Span>Internet </Span><br/></>
+                        }
+                        {!adDetails.utilities.tv && !adDetails.utilities.internet &&
+                            <><Span>Not Included</Span><br/></>
+                        }
+                        <P>Parking Included</P>
+                        <Span>{adDetails.parking}</Span><br/>
+                        <P>Pet Friendly</P>
+                        <Span>{adDetails.pet}</Span>
+                    </Overview>
+                    <TheUnit>
+                        <H>The Unit</H>
+                        <P>Furnished</P>
+                        <Span>{adDetails.furniture}</Span><br/>
+                        <P>Apliances</P>
+                        {adDetails.apliances.laundryInUnit &&
+                            <><Span>Laundry(In Unit) </Span><br/></>
+                        }
+                        {adDetails.apliances.laundryInBuilding &&
+                            <><Span>Laundry(In Building) </Span><br/></>
+                        }
+                        {adDetails.apliances.dishwasher &&
+                            <><Span>Dishwasher</Span><br/></>
+                        }
+                        {adDetails.apliances.fridge &&
+                            <><Span>Fridge / Freezer</Span><br/></>
+                        }
+                        {!adDetails.apliances.laundryInUnit && !adDetails.apliances.laundryInBuilding && !adDetails.apliances.dishwasher && !adDetails.apliances.fridge &&
+                            <><Span>Not Included</Span><br/></>
+                        }
+                        <P>Air Conditioning</P>
+                        <Span>{adDetails.air}</Span><br/>
+                        <P>Personal Outdoor Space</P>
+                        {adDetails.outdoorSpc.yard && 
+                            <><Span>Yard</Span><br/></>
+                        }
+                        {adDetails.outdoorSpc.balcony &&
+                            <><Span>Balcony</Span><br/></>
+                        }
+                        {!adDetails.outdoorSpc.yard && adDetails.outdoorSpc.balcony &&
+                            <><Span>Not Included</Span><br/></>
+                        }
+                        <P>Smoking Permitted</P>
+                        <Span>{adDetails.smoke}</Span><br/>
+                    </TheUnit>
+                </Specification>
                 <Divider />
                 <Description>Description <br/>{adDetails.description}</Description>
             </Details1>
@@ -91,6 +181,7 @@ const FlexDiv=styled.div`
 `;
 const FlexDiv2=styled.div`
     display: flex;
+    margin:5px;
 
 `;
 const Divider = styled.div`
@@ -105,9 +196,7 @@ const Map=styled.button`
     cursor: pointer;
     color: blue;
 `;
-const Overview= styled.div`
-    height: 200px;
-`;
+
 const Description= styled.div`
 
 `;
@@ -120,4 +209,26 @@ const Details2= styled.div`
 const Details3=styled.div`
     width: 15%;
 
+`;
+const Specification=styled.div`
+    display: flex;
+    justify-content: space-evenly;
+`;
+const Overview= styled.div`
+    
+`;
+const TheUnit=styled.div`
+
+`;
+const H=styled.h3`
+    margin-bottom: 10px;
+    font-size: larger;
+`;
+const P=styled.p`
+    font-size: 17px;
+    margin-bottom: 7px;
+    margin-top: 10px;
+`
+const Span= styled.span`
+    margin-left: 8px;
 `
