@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import GoogleMap from 'google-map-react';
+const { REACT_APP_GOOGLE_APIKEY } = process.env;
+
 
 
 
 const MapModal = ({onCloseFunc, center}) => {
+  console.log(REACT_APP_GOOGLE_APIKEY)
   return (
     <Wrapper>
       <Content>
       <GoogleMap
-        bootstrapURLKeys={{key:""}} // set if you need stats etc ...
+        bootstrapURLKeys={{key: REACT_APP_GOOGLE_APIKEY }} // set if you need stats etc ...
         center={center}
        
         zoom={10}>
