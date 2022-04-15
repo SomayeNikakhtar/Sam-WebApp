@@ -11,6 +11,13 @@ export default createGlobalStyle`
       --user-img-width: 120px;
     } */
 
+    #root{
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        
+    }
+
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,
@@ -58,3 +65,4 @@ export default createGlobalStyle`
       font-size: 28px;
     }
 `;
+
