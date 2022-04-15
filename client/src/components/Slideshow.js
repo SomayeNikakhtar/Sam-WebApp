@@ -63,7 +63,7 @@ export default Slideshow;
 const SlideshowC= styled.div`
     margin: 0 auto;
     overflow: hidden;
-    max-width: 500px;
+    /* max-width: 500px; */
 `;
 
 const SlideshowSlider= styled.div`
@@ -74,7 +74,7 @@ const Slide= styled.img`
     display: inline-block;
     height: 400px;
     width: 100%;
-    border-radius: 40px;
+    /* border-radius: 40px; */
 `;
 const SlideshowDots= styled.div`
     text-align: center;

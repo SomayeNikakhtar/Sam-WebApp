@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Loader from "./Loader";
 import Slideshow from "./Slideshow";
 import { FiShare2,  } from "react-icons/fi";
 import { BsBookmark } from "react-icons/bs";

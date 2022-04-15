@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import GoogleMap from 'google-map-react';
-import { SiGooglemaps } from "react-icons/si";
 
 
 
