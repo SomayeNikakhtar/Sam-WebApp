@@ -15,7 +15,7 @@ const db = require('../db/db')
  * the hashed password stored in the database.  If the comparison succeeds, the
  * user is authenticated; otherwise, not.
  */
-passport.use(new LocalStrategy(async(username, password, cb) => {
+passport.use(new LocalStrategy({usernameField: 'email'}, async(username, password, cb) => {
     
     const user = await db.getUser(username);
     if (!user) { 
@@ -47,7 +47,7 @@ passport.use(new LocalStrategy(async(username, password, cb) => {
  * information is stored in the session.
  */
 passport.serializeUser((user, cb) =>{
-    console.log(user)
+    // console.log(user)
     process.nextTick(() => {
       cb(null, { _id: user._id, username: user.username, name:user.name, email:user.email });
     });
@@ -78,17 +78,30 @@ passport.deserializeUser((user, cb) => {
  */
 const singIn= (req, res, next)=>{
     // return res.status(200).json({status: 200 , data: "ads" })
-    req.body.username=req.body.email;
-    const authenticate = passport.authenticate('local', {
-        successMessage: 'Hi',
-        // failureRedirect: '/login',
-        failureMessage: true
-    })
+    // req.body.username=req.body.email;
+    const authenticate = passport.authenticate('local',function(err, user, info) {
+        if (err) { return next(err); }
+        if (!user) { return res.status(401).send(info); }
+    
+        // req / res held in closure
+        req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            if (req.body.remember) {
+                var oneHour = 3600000;
+                req.session.cookie.expires = new Date(Date.now() + oneHour);
+                req.session.cookie.maxAge = oneHour;
+            } else {
+                req.session.cookie.expires = false;
+            }
+          return res.status(200).json({status: 200 , user: {name:req.user.name , email:req.user.email} })
+        });
+    
+      })
     authenticate(req, res, next);
 }
 
 const afterSingIn= (req, res, next)=>{
-    console.log(req.user)
+    // console.log(req.user)
     return res.status(200).json({status: 200 , user: {name:req.user.name , email:req.user.email} })
 }
 
