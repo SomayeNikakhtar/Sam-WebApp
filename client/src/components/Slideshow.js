@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-const colors = ["#0088FE", "#00C49F", "#FFBB28"];
+
 const delay = 2500;
 
 const Slideshow=({images})=> {

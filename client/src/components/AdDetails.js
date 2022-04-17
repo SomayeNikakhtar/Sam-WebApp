@@ -50,7 +50,7 @@ const AdDetails= ()=>{
                     <FlexDiv2>
                     <p>{adDetails.city} - {adDetails.stNum}  {adDetails.stName} -  {adDetails.postalCode}</p>
                     <Map onClick={()=> setShowMap(true)}>(View On Map)</Map>
-                    {showMap && <MapModal onCloseFunc={()=>setShowMap(false)} center={[adDetails.lat, adDetails.lng]} />}
+                    {showMap && <MapModal onCloseFunc={()=>setShowMap(false)} center={[parseFloat(adDetails.lat), parseFloat(adDetails.lng)]} />}
                     </FlexDiv2>
                     <FlexDiv2>
                         <FlexDiv2>
@@ -136,7 +136,7 @@ const AdDetails= ()=>{
                         {adDetails.outdoorSpc.balcony &&
                             <><Span>Balcony</Span><br/></>
                         }
-                        {!adDetails.outdoorSpc.yard && adDetails.outdoorSpc.balcony &&
+                        {!adDetails.outdoorSpc.yard && !adDetails.outdoorSpc.balcony &&
                             <><Span>Not Included</Span><br/></>
                         }
                         <P>Smoking Permitted</P>
@@ -147,7 +147,7 @@ const AdDetails= ()=>{
                 <Description>Description <br/>{adDetails.description}</Description>
             </Details1>
             <Details2>
-                <Slideshow images={adDetails.imagesSrc}></Slideshow>
+                <Slideshow images={adDetails.images}></Slideshow>
                 <textarea placeholder="Your Message"></textarea>
                 <button>Send message</button>
             </Details2>
