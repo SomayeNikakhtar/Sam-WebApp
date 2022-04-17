@@ -22,7 +22,7 @@ const sessionStore = new MongoDBStore({
 
 const PORT = 8000;
 
-const {getAds, getAd, getMe, addNewAd} = require("./routes/handlers");
+const {getAds, getAd, getMe, addNewAd, uploadImage, getMyAds, deleteAd} = require("./routes/handlers");
 const { singIn, signOut, signUp, afterSingIn } = require("./routes/auth");
 
 express()
@@ -35,9 +35,13 @@ express()
 .use(express.static("public"))
 .use(session({
     secret: 'This is a secret',
-    resave: false, // don't save session if unmodified
-    saveUninitialized: false, // don't create session until something stored
-    store: sessionStore
+    resave: true, // don't save session if unmodified
+    saveUninitialized: true, // don't create session until something stored
+    store: sessionStore,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+
 }))
 .use(passport.authenticate('session'))
 // .use(csrf())
@@ -69,23 +73,24 @@ express()
 //     res.status(err.status || 500);
 //     res.render('error');
 // })
-.get("/api/ads", getAds)
+.post("/api/ads", getAds)
 .get("/api/adDetails/:id", getAd)
 .get("/api/me", ensureLoggedIn, getMe)
-.post("/api/signIn", singIn, afterSingIn)
+.post("/api/signIn", singIn)
 .post("/api/signOut", signOut)
 .post("/api/signUp", signUp)
 .post("/api/newAd" , ensureLoggedIn, addNewAd)
-
-
+.post("/api/uploadImg", ensureLoggedIn, uploadImage)
+.get("/api/myAds", ensureLoggedIn, getMyAds)
+.delete("/api/deleteAd/:id", ensureLoggedIn, deleteAd)
 //
 
-.get("*", (req, res) => {
-    res.status(404).json({
-    status: 404,
-    message: "This is obviously not what you are looking for.",
-    });
-})
+// .get("*", (req, res) => {
+//     res.status(404).json({
+//     status: 404,
+//     message: "This is obviously not what you are looking for.",
+//     });
+// })
 
 // Node spins up our server and sets it to listen on port 8000.
 .listen(PORT, () => console.info(`Listening on port ${PORT}`));
