@@ -4,30 +4,26 @@ import { MdAddAPhoto } from "react-icons/md";
 import styled from "styled-components";
 
 
-const ImgPv = () => {
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [dataTransfer, setDataTransfer] = useState(new DataTransfer());
+const ImgPv = ({onImgsChanged}) => {
+  // const [selectedFiles, setSelectedFiles] = useState([]);
+  const [dataTransfer, setDataTransfer] = useState({dt: new DataTransfer()});
   const inputFiles = useRef()
 
+  const getFiles = () =>{
+    const filesArray = Array.from(dataTransfer.dt.files).map(file =>
+        URL.createObjectURL(file)
+    );
+    Array.from(dataTransfer.dt.files).map(file => URL.revokeObjectURL(file) // avoid memory leak
+    );
+    return filesArray;
+  }
   const handleImageChange = (e) => {
     // dataTransfer.items.clear()
     for (let file of e.target.files) {
-		dataTransfer.items.add(file);
-	}
-    setDataTransfer(dataTransfer)
-    console.log(e.target.files, dataTransfer)
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-
-    //   console.log("filesArray: ", filesArray);
-
-      setSelectedFiles((prevImages) => prevImages.concat(filesArray));
-      Array.from(e.target.files).map(
-        (file) => URL.revokeObjectURL(file) // avoid memory leak
-      );
-    }
+		  dataTransfer.dt.items.add(file);
+	  }
+    setDataTransfer({dt:dataTransfer.dt})
+    onImgsChanged(dataTransfer.dt)
   };
   
 
@@ -38,22 +34,21 @@ const ImgPv = () => {
         <Image src={photo} alt="" key={photo} />
         <Close onClick={()=>{
             // inputFiles.current.files.splice(ind, 1)
-            dataTransfer.items.remove(ind)
+            dataTransfer.dt.items.remove(ind)
             inputFiles.current.files = dataTransfer.files;
-            setDataTransfer(dataTransfer)
-            selectedFiles.splice(ind,1);
-            setSelectedFiles([...selectedFiles])
-        }}/>
+            setDataTransfer({dt: dataTransfer.dt})
+            onImgsChanged(dataTransfer.dt)
+          }}/>
       </ImgContainer>
       )
     });
   };
-
+  const selectedFiles = getFiles();
   return (
     
     
       <div>
-        <input name="images" type="file" id="file" multiple onChange={handleImageChange} ref={inputFiles} hidden />
+        <input  type="file" id="file" multiple onChange={handleImageChange} ref={inputFiles} hidden />
         <Holder className="label-holder">
           <Label htmlFor="file" className="label">
             <MdAddAPhoto/>

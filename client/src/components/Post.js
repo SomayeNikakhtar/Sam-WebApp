@@ -1,20 +1,52 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import ImgPreview from "./ImgPreview";
+
 import ImgPv from "./ImgPv";
 
 const Post= ()=>{
+    const [dataTransfer, setDataTransfer] = useState({dt: null});
+
     const History=useHistory()
     const formRef= useRef()
-    const uploadRef=useRef()
-    const postAd=(ev)=>{
+
+    async function uploadImages() {
+        if(!dataTransfer?.dt)
+            return [];
+        const filesArray = Array.from(dataTransfer.dt.files).map(file =>
+            URL.createObjectURL(file)
+        );
+        console.log(filesArray)
+        const uploadedImgs=[]
+        for (const img of filesArray){
+            console.log(img)
+            const imageResponse = await fetch(img)
+            const blob = await imageResponse.blob();
+            
+            const requestOptions = {
+                method: 'POST',
+                body: blob,
+            };
+            const response = await fetch('/api/uploadImg', requestOptions);
+            const {filename} = await response.json();
+            uploadedImgs.push(filename)
+        }
+
+        return uploadedImgs;
+    }
+    window.test = uploadImages
+    const postAd = async (ev) => {
+        
         const formData=new FormData(formRef.current)
         console.log(formRef.current.checkValidity())
-        
+        ev.preventDefault()
+
+        const uploadedImgs = await uploadImages()
+        const body = Object.fromEntries(formData)
+        body.images = uploadedImgs;
         fetch("/api/newAd",{
             method: 'POST',
-            body: JSON.stringify(Object.fromEntries(formData)) ,
+            body: JSON.stringify(body) ,
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -28,18 +60,15 @@ const Post= ()=>{
         })
         .then((json) => {
                 console.log(json);
-                History.push("/");
+                //History.push("/");
         }).catch(err=>{
                 console.log(err)
         })
 
-        ev.preventDefault()
         
     }
 
-    const uploadImage=(img)=>{
-        console.log(img)
-    }
+    
     return(
         <Wrapper>
             
@@ -150,12 +179,14 @@ const Post= ()=>{
                     
                         <h3>Add photos to attract interest to your ad</h3>
                         <p>Include pictures with different angles and details. You can upload a maximum of 10 photos</p>
-                        <label for="images">Select photos</label><br/>
+                        {/* <label for="images">Select photos</label><br/> */}
                         {/* <input type="file" id="images"  multiple="multiple" accept="image" 
                         onChange={(ev)=>uploadImage(ev.target.value)}/>
-                        <input name="images" type="hidden" ref={uploadRef}/> */}
-                        {/* <ImgPreview/> */}
-                        <ImgPv/>
+                         */}
+                        {/* <input name="images" type="hidden" ref={uploadImageRef}/> */}
+                        <ImgPv onImgsChanged={(dt)=>{
+                            setDataTransfer({dt: dt})
+                        }}/>
                         
                     </Divider>
                     <Divider>
@@ -173,7 +204,7 @@ const Post= ()=>{
                             </select><br/>  
                         <input type="number"  placeholder="Street number" name="stNum" required/><br/>
                         <input type="text"  placeholder="Street name" name="stName" required/><br/>        
-                        <input type="text" pattern= "[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]" placeholder="Postal code" name="plcode" required/>
+                        <input type="text" pattern= "[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]" placeholder="Postal code" name="postalCode" required/>
                     </Divider>
                     <Divider>
                         <div><span>4 </span>Price:</div>
