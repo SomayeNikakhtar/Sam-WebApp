@@ -17,7 +17,7 @@ const SignIn=()=>{
         }    
     }
     const History= useHistory()
-    const [userInfo, setUserInfo]= useState({email:"", password:""})
+    const [userInfo, setUserInfo]= useState({email:"", password:"", remember:false})
     const {setMyInfo}=useContext(UserContext)
     
     const doSignIn=()=>{
@@ -59,7 +59,7 @@ const SignIn=()=>{
                         </Field>
                         
                         <Terms>
-                            <input type="checkbox" id="checkBox" value="checked" name="terms" required/>
+                            <input type="checkbox" onChange={(ev)=>setUserInfo({...userInfo, remember:ev.target.checked})} id="remember" value="checked" name="remember" required/>
                             <label for="checkBox">Keep me signed in</label>
                         </Terms>
                             <p>Forgot password?</p>
