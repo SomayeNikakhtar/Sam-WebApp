@@ -1,14 +1,21 @@
-const ads= require("../data/ads.json")
+const fs = require('fs');
+const uuid = require('uuid');
+const mime = require('mime-types')
+// const ads= require("../data/ads.json")
 const db = require('../db/db')
+const { getLocFromPlCode }=require("./externalApis")
 
 
 const getAds= async(req,res)=>{
+    const filters=req.body
+    console.log(filters)
+    const ads=await db.loadAdsByFilter(filters)
     res.status(200).json({status: 200 , data: ads })
 }
 
 const getAd= async(req,res)=>{
     const {id}= req.params
-    const ad= ads.find(el=>el._id===id)
+    const ad= await db.loadAdById(id);
     if (ad)
         res.status(200).json({status: 200 , data:  ad})
     else
@@ -20,6 +27,7 @@ const getMe= async(req,res)=>{
     
 }
 const addNewAd=async(req,res)=>{
+    const {lat, lng}= await getLocFromPlCode(req.body.postalCode)
     const adInfo={
         owner:req.user._id,
         title:req.body.title,
@@ -55,11 +63,17 @@ const addNewAd=async(req,res)=>{
         city:req.body.city,
         stNum:req.body.stNum,
         stName:req.body.stName,
-        plcode:req.body.plcode,
-        price:req.body.price,
+        postalCode:req.body.postalCode,
+        price:parseFloat(req.body.price),
         tel:req.body.tel,
         email:req.body.email,
+        images : req.body.images,
+        lat: lat,
+        lng: lng,
+        date: new Date() 
     }
+    
+
     const result= await db.addAd(adInfo)
     if (result)
         res.status(200).json({status: 200 , message: "Advertisement posted successfully!"})
@@ -68,10 +82,40 @@ const addNewAd=async(req,res)=>{
         
 }
 
+const uploadImage=async(req,res)=>{
+    let data = Buffer.from('');
+    req.on('data', (chunk) => {
+        data = Buffer.concat([data, chunk]);
+    });
+    req.on('end', () => {
+        const filename = `/data/images/${uuid.v4()}.${ mime.extension(req.headers['content-type'])}`
+        fs.createWriteStream(`public${filename}`).write(data);
+        res.send({
+           filename
+        });
+    });
+}
 
+const getMyAds=async(req,res)=>{
+    const myAds=await db.loadAdsByOwner(req.user._id)
+    res.status(200).json({status: 200 , data: myAds })
+}
+
+const deleteAd=async(req,res)=>{
+    const {id}= req.params
+    const owner= req.user._id
+    const result=db.deleteAdById(id, owner)
+    if (result)
+        res.status(200).json({status: 200, message: "Deleted" })
+    else
+        res.status(404).json({status: 404 , message: "Error" }) 
+}
 module.exports={
     getAds,
     getAd,
     getMe,
     addNewAd,
+    uploadImage,
+    getMyAds,
+    deleteAd,
 }
