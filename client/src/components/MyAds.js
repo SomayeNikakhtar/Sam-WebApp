@@ -1,12 +1,46 @@
 import styled from "styled-components";
 import { RiAdvertisementFill,  } from "react-icons/ri";
 import { useHistory } from "react-router-dom";
-import { AiOutlinePlus } from "react-icons/ai";
-import pic from "../assets/house.jpg"
+import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { BiEdit } from "react-icons/bi";
 
 
 const MyAds=()=>{
     const History=useHistory()
+    const [myAdDetails, setMyAdDetails]=useState(null)
+    useEffect(() => {
+        fetch("/api/myAds")
+        .then((res)=>{
+            if (res.ok) {
+                return res.json();
+            }
+            throw Error(res.statusText);
+        })
+        .then (res=> setMyAdDetails(res.data))
+        .catch(err=>console.error(err))
+    },[])
+
+    const deleteAd=(id, ind)=>{
+        fetch(`/api/deleteAd/${id}`,{
+            method: 'DELETE',
+            })
+            .then(res=>{
+                if (res.ok) {
+                    return res.json();
+                }
+                throw Error(res.statusText);
+            })
+            .then((json) => {
+                console.log(json);
+                myAdDetails.splice(ind, 1)
+                setMyAdDetails([...myAdDetails])
+        }).catch(err=>{
+                console.log(err)
+        })
+    }
+
+    if(!myAdDetails) return<></>
     return(
         <Wrapper>
             <Wrapper2>
@@ -16,10 +50,20 @@ const MyAds=()=>{
                     <AdIcon size="25" />
                 </Icons>
             </Wrapper2>
-            <Ad>
-                <Title> westmout- 3-1/2 - blah blah</Title>
-                <Image src={pic}></Image>
-            </Ad>
+            {myAdDetails.map((el, ind)=>{
+                return(
+                    <Ad key={el._id}>
+                        <Title>{el.title}</Title>
+                        <EditIcon size="20"/>
+                        <DeleteIcon size="20" onClick={()=>deleteAd(el._id, ind)}/>
+                        <Image src={el.images[0]}></Image>
+
+                    </Ad>
+                )
+            }
+
+            )}
+            
         </Wrapper>
     )
 }
@@ -45,7 +89,8 @@ const Wrapper2= styled.div`
     
 `;
 const Titre= styled.div`
-
+    font-weight: bold;
+    font-size: 20px;
 `;
 const Ad= styled.div`
     display: flex;
@@ -75,7 +120,16 @@ const PlusIcon= styled(AiOutlinePlus)`
 `
 const Title=styled.div`
     align-self: center;
+    font-size: 18px;
 `;
 const Image=styled.img`
     width: 90px;
 `;
+const DeleteIcon=styled(AiOutlineDelete)`
+    align-self: center;
+    cursor: pointer;
+`
+const EditIcon=styled(BiEdit)`
+    align-self: center;
+    cursor: pointer ;
+`
