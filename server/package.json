@@ -19,10 +19,14 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "helmet": "^5.0.2",
+    "mime-types": "^2.1.35",
     "mongodb": "^4.5.0",
     "morgan": "^1.10.0",
     "passport": "^0.5.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
