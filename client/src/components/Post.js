@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { AdContext } from "./AdContext";
 
 import ImgPv from "./ImgPv";
 
@@ -60,7 +61,7 @@ const Post= ()=>{
         })
         .then((json) => {
                 console.log(json);
-                //History.push("/");
+                History.push(`/advertisement-details/${json.data}`);
         }).catch(err=>{
                 console.log(err)
         })
@@ -134,7 +135,11 @@ const Post= ()=>{
                         <label for="dishwasher">Dishwasher</label><br/>
                         <input type="checkbox" value="fridge" id="fridge" name="fridge" />
                         <label for="fridge">Fridge / Freezer</label><br/>
-                        <p>Air Conditioning</p>
+
+                
+                </Divider>
+                <Divider>
+                <p>Air Conditioning</p>
                         <input type="radio" value="yes" id="yes" name="air" required/>
                         <label for="yes">Yes</label><br/>
                         <input type="radio" value="no" id="no" name="air"/>
@@ -169,9 +174,9 @@ const Post= ()=>{
                         <input type="radio" value="no" id="no" name="parking"/>
                         <label for="no">No</label><br/>
                         <p>Descriotion</p>
-                        <textarea name="description" required/>
-                    
-                </Divider>
+                        <textarea name="description" rows="5" required/>
+                </Divider>    
+
                 <div>
                     <Divider>
                         <div><span>2 </span>Media</div>
@@ -219,20 +224,20 @@ const Post= ()=>{
                         <label for="email" >Email:</label>
                         <input type="email" name="email" />
                     </Divider>
-                    <button >Submit</button>
+                    <button  >Submit</button>
                 </div>
         </Form>
         </Wrapper>
     )
 }
 export default Post;
-const Liner = styled.div`
-  height: 1px;
-  background: #ccc;
-  margin-bottom: 15px;
+    const Liner = styled.div`
+    height: 1px;
+    background: #ccc;
+    margin-bottom: 15px;
 `;
 const Wrapper=styled.div`
-     flex-grow: 1;
+    flex-grow: 1;
 `;
 const Divider = styled.div`
     border: 2px solid red;
