@@ -53,7 +53,11 @@ const MyAds=()=>{
             {myAdDetails.map((el, ind)=>{
                 return(
                     <Ad key={el._id}>
+                        <Title>
                         <Title>{el.title}</Title>
+                        <p>{el.date}</p>
+                        </Title>
+                        
                         <EditIcon size="20"/>
                         <DeleteIcon size="20" onClick={()=>deleteAd(el._id, ind)}/>
                         <Image src={el.images[0]}></Image>
