@@ -65,6 +65,12 @@ const Filters=()=>{
                     />
                     <label for="basement">Basement</label><br/>
                 <span>Pet Friendly</span><br/>
+                    <input type="radio" value="all" name="pet" checked={!filters.pet || filters.pet==="all"}
+                        onChange={(ev)=>{
+                            setFilters({...filters, pet: ev.target.value })
+                        }}
+                    />
+                    <label for="all">All</label><br/>
                     <input type="radio" value="yes" name="pet"
                         onChange={(ev)=>setFilters({...filters, pet: ev.target.value })}
                     />
@@ -78,6 +84,10 @@ const Filters=()=>{
                     />
                     <label for="limited">Limited</label><br/> 
                 <span>Parking Included</span><br/>
+                    <input type="radio" value="all" name="parking" checked={!filters.parking || filters.parking==="all"}
+                        onChange={(ev)=>setFilters({...filters, parking: ev.target.value })}
+                    />
+                    <label for="all">All</label><br/>
                     <input type="radio" value="yes" name="parking"
                         onChange={(ev)=>setFilters({...filters, parking: ev.target.value })}
                     />
