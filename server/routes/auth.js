@@ -87,9 +87,9 @@ const singIn= (req, res, next)=>{
         req.logIn(user, function(err) {
             if (err) { return next(err); }
             if (req.body.remember) {
-                var oneHour = 3600000;
-                req.session.cookie.expires = new Date(Date.now() + oneHour);
-                req.session.cookie.maxAge = oneHour;
+                var oneWeek = 7*24*60*60*1000; //one week 
+                req.session.cookie.expires = new Date(Date.now() + oneWeek);
+                req.session.cookie.maxAge = oneWeek;
             } else {
                 req.session.cookie.expires = false;
             }
@@ -143,7 +143,7 @@ const signUp= async (req, res, next) =>{
 
         }
         if (db.addUser(user)){
-            const loggedInUser = {username: user.username}
+            const loggedInUser = {...user, _id: user.email}
             req.login(loggedInUser, function(err) {
                 if (err) 
                     return next(err); 
@@ -155,4 +155,29 @@ const signUp= async (req, res, next) =>{
     });
 };
 
-module.exports ={singIn, signOut, signUp, afterSingIn}
+const ensureLogIn = (options) =>{
+    if (typeof options == 'string') {
+        options = { redirectTo: options };
+    }
+    options = options || {};
+
+    var url = options.redirectTo;
+    var setReturnTo = (options.setReturnTo === undefined) ? true : options.setReturnTo;
+    
+
+    return function (req, res, next) {
+        if (!req.isAuthenticated || !req.isAuthenticated()) {
+            if (setReturnTo && req.session) {
+                req.session.returnTo = req.originalUrl || req.url;
+            }
+            if (!url)
+                return res.status(401).send({message:"Fuck you!"});
+            else
+                return res.redirect(url);
+        }
+        next();
+    };
+};
+
+
+module.exports ={singIn, signOut, signUp, afterSingIn, ensureLogIn}
