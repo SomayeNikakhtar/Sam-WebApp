@@ -1,23 +1,33 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { AdProvider } from "./AdContext";
 import AdDetails from "./AdDetails";
 import AdsList from "./AdsList";
 import Footer from "./Footer";
 import GlobalStyles from "./GlobalStyles";
 import Header from "./Header";
 import Homepage from "./Homepage";
+import { MsgProvider } from "./MsgContext";
 import MyAds from "./MyAds";
 import MyFavs from "./MyFavs";
 import MyMsgs from "./MyMsgs";
 import Post from "./Post";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import SingleConversations from "./SingleConversation";
 import { UserProvider } from "./UserContext";
+import en from 'javascript-time-ago/locale/en.json'
+import TimeAgo from 'javascript-time-ago';
+
+
+TimeAgo.addDefaultLocale(en)
 
 function App() {
     return(
         <BrowserRouter>
             <GlobalStyles/>
             <UserProvider>
+            <AdProvider>
+            <MsgProvider>
             <Header />
             <Switch>
                 <Route exact path="/">
@@ -41,6 +51,9 @@ function App() {
                 <Route exact path="/my-messages">
                     <MyMsgs />
                 </Route>
+                <Route exact path="/my-messages/:id">
+                    <SingleConversations />
+                </Route>
                 <Route exact path="/my-ads">
                     <MyAds />
                 </Route>
@@ -49,8 +62,11 @@ function App() {
                 </Route>
             </Switch>
             <Footer/>
+            </MsgProvider>
+            </AdProvider>    
             </UserProvider>
         </BrowserRouter>
     )
 }
+
 export default App;

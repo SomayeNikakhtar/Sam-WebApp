@@ -9,7 +9,11 @@ const session = require('express-session');
 const csrf = require('csurf');
 const passport = require('passport');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const ensureLogIn = require('connect-ensure-login').ensureLoggedIn;
+const {getAds, getAd, getMe, addNewAd, uploadImage, getMyAds, deleteAd, sendMessage, 
+    getMyConversations, getMyMsgs} = require("./routes/handlers");
+const { singIn, signOut, signUp, afterSingIn, ensureLogIn } = require("./routes/auth");
+
+
 const ensureLoggedIn = ensureLogIn({setReturnTo:false});
 
 require("dotenv").config({path:"./.env"});
@@ -22,8 +26,6 @@ const sessionStore = new MongoDBStore({
 
 const PORT = 8000;
 
-const {getAds, getAd, getMe, addNewAd, uploadImage, getMyAds, deleteAd} = require("./routes/handlers");
-const { singIn, signOut, signUp, afterSingIn } = require("./routes/auth");
 
 express()
 
@@ -83,6 +85,9 @@ express()
 .post("/api/uploadImg", ensureLoggedIn, uploadImage)
 .get("/api/myAds", ensureLoggedIn, getMyAds)
 .delete("/api/deleteAd/:id", ensureLoggedIn, deleteAd)
+.post("/api/sendMessage", ensureLoggedIn , sendMessage)
+.get("/api/myConversations",ensureLoggedIn,  getMyConversations)
+.get("/api/myConversations/:id" , ensureLoggedIn, getMyMsgs)
 //
 
 // .get("*", (req, res) => {

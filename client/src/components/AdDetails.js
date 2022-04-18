@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Slideshow from "./Slideshow";
@@ -6,11 +6,9 @@ import { FiShare2,  } from "react-icons/fi";
 import { BsBookmark } from "react-icons/bs";
 import { BiBuildingHouse, BiBath } from "react-icons/bi";
 import { RiHotelBedLine } from "react-icons/ri";
-
-
-
 import MapModal from "./MapModal";
 import { AiOutlineWifi } from "react-icons/ai";
+import { MsgContext } from "./MsgContext";
 
 
 const AdDetails= ()=>{
@@ -18,6 +16,8 @@ const AdDetails= ()=>{
     const [showMap,setShowMap]=useState(false)
     const History = useHistory();
     const {id}= useParams()
+    const {sendMsg}= useContext(MsgContext)
+    const [msgContent, setMsgContent]=useState("")
 
 
     useEffect(() => {
@@ -148,8 +148,8 @@ const AdDetails= ()=>{
             </Details1>
             <Details2>
                 <Slideshow images={adDetails.images}></Slideshow>
-                <textarea placeholder="Your Message"></textarea>
-                <button>Send message</button>
+                <textarea placeholder="Your Message" onChange={(ev)=>setMsgContent(ev.target.value)}></textarea>
+                <button onClick={()=>sendMsg({receiver:adDetails.owner ,content:msgContent, adId:adDetails._id})}>Send message</button>
             </Details2>
             <Details3/>
         </Wrapper>

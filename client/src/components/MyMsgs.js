@@ -1,21 +1,39 @@
 import styled from "styled-components";
 import { RiAdvertisementFill,  } from "react-icons/ri";
-import { useHistory } from "react-router-dom";
-import { AiOutlinePlus } from "react-icons/ai";
+import { Link, useHistory } from "react-router-dom";
+import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
 import pic from "../assets/house.jpg"
+import { useContext, useEffect } from "react";
+import { MsgContext } from "./MsgContext";
 
 
 const MyMsgs=()=>{
     const History=useHistory()
+    const {fetchConversations, myConversations, } = useContext(MsgContext)
+    useEffect(() => {
+        fetchConversations()
+    },[])
+
+    if (!myConversations) return <></>
     return(
         <Wrapper>
             <Wrapper2>
                 <Titre>All Messages</Titre>
             </Wrapper2>
-            <Msg>
-                <Title> westmout- 3-1/2 - blah blah</Title>
-                <Image src={pic}></Image>
-            </Msg>
+            {myConversations.map((el, ind)=>{
+                return(
+                    <Msg key={el._id} to={`/my-messages/${el._id}`}>
+                        <div>
+                            <Title>{el.title}</Title>
+                            <p>{el.msgPrev}</p>
+                            <p>{el.date}</p>
+                        </div>
+                        {/* <DeleteIcon size="20" /> */} 
+                        <Image src={el.image}></Image>
+                    </Msg>
+                )
+            })}
+            
         </Wrapper>
     )
 }
@@ -43,7 +61,7 @@ const Wrapper2= styled.div`
 const Titre= styled.div`
 
 `;
-const Msg= styled.div`
+const Msg= styled(Link)`
     display: flex;
     justify-content: space-between;
     border: none;
@@ -51,6 +69,7 @@ const Msg= styled.div`
     margin-top: 10px;
     padding: 20px;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
+    text-decoration: none;
 `;
 
 const Icons=styled.div`
@@ -75,3 +94,7 @@ const Title=styled.div`
 const Image=styled.img`
     width: 90px;
 `;
+const DeleteIcon=styled(AiOutlineDelete)`
+    align-self: center;
+    cursor: pointer;
+`

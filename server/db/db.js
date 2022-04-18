@@ -43,7 +43,8 @@ const addUser = async (user) =>{
 const addAd=async (ad) =>{
     const db = await getClientDB();
     const result = await db.collection("advertisements").insertOne(ad);
-    return result.acknowledged;
+
+    return {ack:result.acknowledged, id: result.insertedId};
     
 }
 
@@ -99,9 +100,9 @@ const loadAdsByFilter=async(filters)=>{
         findObj.bedrooms=filters.bedrooms
     if(filters.bathrooms && filters.bathrooms!=="All")
         findObj.bathrooms=filters.bathrooms
-    if(filters.pet)
+    if(filters.pet && filters.pet!=="all")
         findObj.pet=filters.pet
-    if(filters.parking)
+    if(filters.parking && filters.parking!=="all")
         findObj.parking=filters.parking
 
     if(filters.minPrice)
@@ -111,7 +112,8 @@ const loadAdsByFilter=async(filters)=>{
 
     if(filters.unitType){
         const trues= Object.keys(filters.unitType).filter(el=>filters.unitType[el]===true )
-        findObj.unitType={$in:trues}
+        if (trues.length>0)
+            findObj.unitType={$in:trues}
     }
 
     console.log(findObj)
@@ -139,4 +141,66 @@ const deleteAdById=async(id, owner)=>{
     }
 }
 
-module.exports = { getUser, addUser, addAd, loadAds, loadAdById, loadAdsByOwner, loadAdsByFilter, deleteAdById };
+const insertMsg=async(sender, receiver, content, adId)=>{
+    const db = await getClientDB();
+    const adInfo = await loadAdById(adId)
+    if (!adInfo) return false;
+
+    const convUser1 = adInfo.owner===receiver ? sender : receiver // starter of conversation
+    const convUser2 = adInfo.owner // owner of Ad who is contacted
+    const convInfo={
+        user1:convUser1 , 
+        user2:convUser2, 
+        adId:adId, 
+        title:adInfo.title,
+        image:adInfo.images[0],
+        msgPrev:content,
+        date: new Date()
+    }
+    let convId;
+    const conv=await db.collection("conversations").findOne({user1:convUser1 , user2:convUser2, adId:adId })
+    if(!conv){
+        const result=await db.collection("conversations").insertOne(convInfo)
+        convId= result.insertedId //A field insertedId with the _id value of the inserted document.
+
+    }else{
+        db.collection("conversations").replaceOne({_id:conv._id}, convInfo);
+        convId=conv._id;
+    }
+    
+
+    const msgInfo={
+        sender:sender,
+        receiver:receiver,
+        content: content,
+        adId: new ObjectId(adId),
+        date: new Date(),
+        conversationId: convId,
+    }
+    console.log(sender)
+    const result = await db.collection("messages").insertOne(msgInfo);
+    return {result: result.acknowledged, msgInfo:msgInfo};
+
+}
+const getConversations=async(userId)=>{
+    const db = await getClientDB();
+    const result = await db.collection("conversations").find({$or:[{user1:userId}, {user2:userId}]}).toArray();
+    return result;
+}
+
+const getConversationMsgs=async(userId, conversationId)=>{
+    const db = await getClientDB();
+    const conv=await db.collection("conversations").findOne({_id:new ObjectId(conversationId)})
+    if (conv &&(conv.user1===userId || conv.user2===userId)){
+        const result = await db.collection("messages").find({conversationId:new ObjectId(conversationId)}).toArray();
+        return result;
+    }else{
+        return [];
+    }
+
+}
+
+module.exports = { getUser, addUser, addAd, loadAds, loadAdById, 
+    loadAdsByOwner, loadAdsByFilter, deleteAdById, insertMsg,
+    getConversations, getConversationMsgs,   
+};

@@ -8,7 +8,7 @@ const { getLocFromPlCode }=require("./externalApis")
 
 const getAds= async(req,res)=>{
     const filters=req.body
-    console.log(filters)
+    // console.log(filters)
     const ads=await db.loadAdsByFilter(filters)
     res.status(200).json({status: 200 , data: ads })
 }
@@ -75,8 +75,9 @@ const addNewAd=async(req,res)=>{
     
 
     const result= await db.addAd(adInfo)
-    if (result)
-        res.status(200).json({status: 200 , message: "Advertisement posted successfully!"})
+    console.log(result)
+    if (result.ack)
+        res.status(200).json({status: 200 , data:result.id, message: "Advertisement posted successfully!"})
     else
         res.status(504).json({status: 504 , message: 'Error'})
         
@@ -110,6 +111,30 @@ const deleteAd=async(req,res)=>{
     else
         res.status(404).json({status: 404 , message: "Error" }) 
 }
+
+const sendMessage=async(req, res)=>{
+    // console.log(req.user)
+
+    const msg=await db.insertMsg(req.user._id, req.body.receiver, req.body.content, req.body.adId)
+    if (msg.result)
+        res.status(200).json({status: 200, data:msg.msgInfo, message: "Message is sent!" })
+    else
+        res.status(404).json({status: 404 , message: "Error" }) 
+    
+}
+
+const getMyConversations= async(req, res)=>{
+    const conversation= await db.getConversations(req.user._id)
+    res.status(200).json({status: 200, data:conversation })
+}
+
+const getMyMsgs=async(req, res)=>{
+    const messages= await db.getConversationMsgs(req.user._id, req.params.id)
+    res.status(200).json({status: 200, data:messages })
+
+}
+
+
 module.exports={
     getAds,
     getAd,
@@ -118,4 +143,7 @@ module.exports={
     uploadImage,
     getMyAds,
     deleteAd,
+    sendMessage,
+    getMyConversations,
+    getMyMsgs
 }
