@@ -32,7 +32,7 @@ const ImgPv = ({onImgsChanged}) => {
       return (
       <ImgContainer>
         <Image src={photo} alt="" key={photo} />
-        <Close onClick={()=>{
+        <Close color="red" onClick={()=>{
             // inputFiles.current.files.splice(ind, 1)
             dataTransfer.dt.items.remove(ind)
             inputFiles.current.files = dataTransfer.files;
@@ -49,12 +49,12 @@ const ImgPv = ({onImgsChanged}) => {
     
       <div>
         <input  type="file" id="file" multiple onChange={handleImageChange} ref={inputFiles} hidden />
-        <Holder className="label-holder">
-          <Label htmlFor="file" className="label">
+        <Holder >
+          <Label htmlFor="file" >
             <MdAddAPhoto/>
           </Label>
         </Holder>
-        <Result className="result">{renderPhotos(selectedFiles)}</Result>
+        <Result >{renderPhotos(selectedFiles)}</Result>
       </div>
     
   );
@@ -73,12 +73,13 @@ const Holder= styled.div`
 const Label = styled.label`
     height: 50px;
     width: 150px;
-    background-color: pink;
+    background-color: var(--hover-color);
     color: white;
     display: grid;
     place-items: center;
     font-size: 2rem ;
     cursor: pointer;
+    border-radius: 3px;
 `
 const Result= styled.div`
     min-height: 100%;

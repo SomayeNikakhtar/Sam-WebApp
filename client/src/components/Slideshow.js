@@ -61,7 +61,7 @@ const Slideshow=({images})=> {
 export default Slideshow;
 
 const SlideshowC= styled.div`
-    margin: 0 auto;
+    /* margin: 0 auto; */
     overflow: hidden;
     /* max-width: 500px; */
 `;
@@ -72,20 +72,21 @@ const SlideshowSlider= styled.div`
 `;
 const Slide= styled.img`
     display: inline-block;
-    height: 400px;
+    height: 300px;
     width: 100%;
-    /* border-radius: 40px; */
+    object-fit: cover;
+    border-radius: 5px;
 `;
 const SlideshowDots= styled.div`
     text-align: center;
 `;
 const SlideshowDot= styled.div`
     display: inline-block;
-    height: 20px;
-    width: 20px;
+    height: 18px;
+    width: 18px;
     border-radius: 50%;
     cursor: pointer;
-    margin: 15px 7px 0px;
-    background-color: ${({ isActive }) => (!isActive ? "#c4c4c4" : "#6a0dad")};
+    margin: 15px 5px;
+    background-color: ${({ isActive }) => (!isActive ? "#E0E1DD" : "#778DA9")};
 
 `;

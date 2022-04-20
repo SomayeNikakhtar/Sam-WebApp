@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SamLogo from "../assets/SamLogo.png"
+import SamLogo from "../assets/Sam.png"
 import { AiFillInstagram,  } from "react-icons/ai";
 import { BsTwitter , BsFacebook } from "react-icons/bs"
 import {ReactComponent as AppStore} from '../assets/app_store_badge.svg'; 
@@ -11,32 +11,33 @@ const Footer = () => {
   return (
     <FootWrap>
         <FlexDiv>
-            <Logo src={SamLogo}/>
+            <Logo src={SamLogo} />
             <Copyright>© 2022 Sam Inc. {""}</Copyright>
             <FlexDiv2>
-            <BsFacebook/>
+            <BsFacebook />
             <BsTwitter/>
             <AiFillInstagram/>
             </FlexDiv2>
         </FlexDiv>
         <FlexDiv>
-            <p>Company</p>
-            <Button>About Us</Button>
-            <Button>Blog</Button>
+            <P>Company</P>
+            <Option>About Us</Option>
+            <Option>Blog</Option>
         </FlexDiv>
         <FlexDiv>
-            <p>Support</p>
-            <Button>Terms and Condition</Button>
-            <Button>Contact us</Button>
+            <P>Support</P>
+            <Option>Terms and Condition</Option>
+            <Option>Contact Us</Option>
         </FlexDiv>
         <FlexDiv>
-            <p>Privacy Policy</p>
-            <Button>Privacy</Button>
+            <P>Privacy Policy</P>
+            <Option>Privacy Policy</Option>
+            <Option>Notice of Collection</Option>
         </FlexDiv>
-        {/* <FlexDiv> */}
-            <AppStore/>
+        <FlexDiv2>
+            <App/>
             <PlayStore/>
-        {/* </FlexDiv> */}
+        </FlexDiv2>
       
       
     </FootWrap>
@@ -49,47 +50,57 @@ const FootWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  /* min-height: 70px; */
-  background-color: orange;
-  margin: 0 auto;
-  /* font-family: sans-serif; */
-  
-  /* color: #4d4f50; */
+  background-color: var(--primary-color);
+  color: var(--gray-color);
+  min-height: 110px;
 `;
 
 const Copyright = styled.div`
-  padding-left: 50px;
+  margin-bottom: 10px;
 `;
 
 
-
-const Button = styled.button`
+const P=styled.button`
   padding: 0 25px 0 25px;
-  /* font-family: sans-serif; */
-  /* font-size: 1em; */
-  /* color: gray; */
+  color: var(--hover-color);
+  background: none;
+  border: none;
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 10px;
+  :hover {
+    cursor: pointer;
+  }
+`
+const Option = styled.button`
+  padding: 0 25px ;
+  color: var(--gray-color);
   background: none;
   border: none;
   height: 25px;
-
+  text-align: left;
   :hover {
-    /* color: #b0b1b1; */
+    color: var(--hover-color);
     cursor: pointer;
   }
 `;
 const Logo = styled.img`
-  height: 40px;
-  width: auto;
-  /* border: 0; */
-  /* padding: 0 50px 0 50px; */
+  width: 60px;
+  margin-bottom: 15px;
 `;
 const FlexDiv=styled.div`
     display: flex;
     flex-direction: column;
+    margin: 10px;
 `;
 const FlexDiv2=styled.div`
     display: flex;
+    margin-right: 10px;
+    justify-content: space-between;
     
 `;
+const App=styled(AppStore)`
+  margin-right: 30px;
+`
 
 export default Footer;

@@ -2,6 +2,8 @@ import { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from './UserContext'
+import logo from "../assets/google.png";
+
 
 const SignUp=()=>{
     const pwdInp=useRef();
@@ -45,9 +47,10 @@ const SignUp=()=>{
     }
     return(
         <Wrapper>
+            <Title>Sign Up Form</Title>
             <Container>
                 <Form>
-                    <p>Sign up Form  </p>
+                
                         <Field>
                             <Input type="text" onChange={(ev)=>setUserInfo({...userInfo, name:ev.target.value})} required/>
                             <Lable>Name</Lable>
@@ -66,19 +69,19 @@ const SignUp=()=>{
                             <input type="checkbox" id="checkBox" value="checked" name="terms" required/>
                             <label for="checkBox">I agree to the <a href="#">terms of service</a></label>
                         </Terms>
-                        <Button>
-                            {/* <Inner ></Inner> */}
+                        
                             <SignUpBtn onClick={(ev)=>{
                                 ev.preventDefault()
                                 doSignUp()
                             }}>Sign up</SignUpBtn>
-                        </Button>
+                        
                         <ErrorMsg></ErrorMsg>
 
                 </Form>
+                
                 <Auth>Or sign up with</Auth>
                 <Link>
-                    <Google>Google</Google>
+                    <Google src={logo}/>
                 </Link>
             </Container>
         </Wrapper>
@@ -89,22 +92,21 @@ export default SignUp;
 
 const Wrapper=styled.div`
     display: flex;
-    /* width: 100% ; */
+    flex-direction: column;
     flex-grow: 1;
     justify-content: center;
     align-items: center;
+    
 `;
 const Form= styled.form`
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
+
 `;
 const Container=styled.div`
     position: relative;
     width: 400px;
-    /* background: white; */
-    padding: 60px 40px;
+    padding: 20px 40px;
+    box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
+
 `
 const Field = styled.div`
     margin: 25px 0;
@@ -124,7 +126,6 @@ const Show=styled.span`
     cursor: pointer;
     user-select: none;
     visibility: hidden;
-    /* font-family: 'Open Sans', sans-serif; */
 
 `
 
@@ -163,42 +164,16 @@ const Lable= styled.label`
     font-size: 18px;
     transition: .4s;
 `
-const Button=styled.div`
-    margin: 25px 0;
-    position: relative;
-    height: 50px;
-    width: 100%;
-    margin-top: 30px;
-    overflow: hidden;
-    z-index: 111;
-    
-    &:hover{
-        .inner{
-            left: 0;
-        }    
-    }
-`
-
-// const Inner=styled.div`
-//     position: absolute;
-//     height: 100%;
-//     width: 100%;
-//     /* left: -100%; */
-//     z-index: -1;
-//     transition: all .4s;
-//     /* background: -webkit-linear-gradient(right,#00dbde,#fc00ff,#00dbde,#fc00ff); */
-// `
 const SignUpBtn=styled.button`
     width: 100%;
-    height: 100%;
-    border: none;
-    background: pink;
-    outline: none;
-    color: white;
-    font-size: 20px;
     cursor: pointer;
-    /* font-family: 'Montserrat', sans-serif; */
-    
+    background-color: var(--text-alter);
+    border: none;
+    border-radius: 4px;
+    color: var(--gray-color);
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 18px;  
 `
 const Auth=styled.div`
     margin: 35px 0 20px 0;
@@ -213,23 +188,23 @@ const Link= styled.div`
     align-items: center;
    
 `
-const Google= styled.div`
-    height: 40px;
+const Google= styled.img`
     width: 30%;
-    border: 1px solid silver;
-    border-radius: 3px;
-    margin: 0 10px;
-    transition: .4s;
-    &:hover{
-        border: 1px solid #dd4b39;
-    }
+    cursor: pointer;
 `
 const Terms= styled.div`
     background-color: #f2f2f2;
     padding: 10px;
     margin-top: 15px;
+    margin-bottom: 15px;
     border-radius: 5px;
 `;
 const ErrorMsg=styled.div`
 
 `
+const Title = styled.div`
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 25px;
+  margin: 0px 20px 20px 20px;
+`;

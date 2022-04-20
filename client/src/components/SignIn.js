@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from './UserContext'
+import logo from "../assets/google.png";
 
 const SignIn=()=>{
     const pwdInp=useRef();
@@ -45,9 +46,9 @@ const SignIn=()=>{
     }
     return(
         <Wrapper>
+            <Title>Sign In Form</Title>
             <Container>
                 <Form>
-                    <p>Sign in</p>
                         <Field >
                             <Input type="email" onChange={(ev)=>setUserInfo({...userInfo, email:ev.target.value})} required/>
                             <Lable>Email </Lable>
@@ -58,24 +59,23 @@ const SignIn=()=>{
                             <Lable>Password</Lable>
                         </Field>
                         
-                        <Terms>
+                        <Remember>
                             <input type="checkbox" onChange={(ev)=>setUserInfo({...userInfo, remember:ev.target.checked})} id="remember" value="checked" name="remember" required/>
                             <label for="checkBox">Keep me signed in</label>
-                        </Terms>
+                        </Remember>
                             <p>Forgot password?</p>
-                        <Button>
-                            {/* <Inner ></Inner> */}
-                            <SignUpBtn onClick={(ev)=>{
+                        
+                            <SignInBtn onClick={(ev)=>{
                                 ev.preventDefault()
                                 doSignIn()
-                            }}>Sign In</SignUpBtn>
-                        </Button>
+                            }}>Sign In</SignInBtn>
+                       
                         <ErrorMsg></ErrorMsg>
 
                 </Form>
                 <Auth>Or sign in with</Auth>
                 <Link>
-                    <Google>Google</Google>
+                <Google src={logo}/>
                 </Link>
             </Container>
         </Wrapper>
@@ -86,7 +86,7 @@ export default SignIn;
 
 const Wrapper=styled.div`
     display: flex;
-    /* width: 100% ; */
+    flex-direction: column;
     flex-grow: 1;
     justify-content: center;
     align-items: center;
@@ -100,8 +100,8 @@ const Form= styled.form`
 const Container=styled.div`
     position: relative;
     width: 400px;
-    /* background: white; */
-    padding: 60px 40px;
+    padding: 20px 40px;
+    box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
 `
 const Field = styled.div`
     margin: 25px 0;
@@ -176,25 +176,17 @@ const Button=styled.div`
     }
 `
 
-// const Inner=styled.div`
-//     position: absolute;
-//     height: 100%;
-//     width: 100%;
-//     /* left: -100%; */
-//     z-index: -1;
-//     transition: all .4s;
-//     /* background: -webkit-linear-gradient(right,#00dbde,#fc00ff,#00dbde,#fc00ff); */
-// `
-const SignUpBtn=styled.button`
+
+const SignInBtn=styled.button`
     width: 100%;
-    height: 100%;
-    border: none;
-    background: pink;
-    outline: none;
-    color: white;
-    font-size: 20px;
     cursor: pointer;
-    /* font-family: 'Montserrat', sans-serif; */
+    background-color: var(--text-alter);
+    border: none;
+    border-radius: 4px;
+    color: var(--gray-color);
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 18px; 
     
 `
 const Auth=styled.div`
@@ -210,23 +202,23 @@ const Link= styled.div`
     align-items: center;
    
 `
-const Google= styled.div`
-    height: 40px;
+const Google= styled.img`
     width: 30%;
-    border: 1px solid silver;
-    border-radius: 3px;
-    margin: 0 10px;
-    transition: .4s;
-    &:hover{
-        border: 1px solid #dd4b39;
-    }
+    cursor: pointer;
 `
-const Terms= styled.div`
+const Remember= styled.div`
     background-color: #f2f2f2;
     padding: 10px;
     margin-top: 15px;
+    margin-bottom: 15px;
     border-radius: 5px;
 `;
 const ErrorMsg=styled.div`
 
 `
+const Title = styled.div`
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 25px;
+  margin: 0px 20px 20px 20px;
+`;

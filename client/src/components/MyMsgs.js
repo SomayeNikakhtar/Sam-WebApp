@@ -2,13 +2,12 @@ import styled from "styled-components";
 import { RiAdvertisementFill,  } from "react-icons/ri";
 import { Link, useHistory } from "react-router-dom";
 import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
-import pic from "../assets/house.jpg"
 import { useContext, useEffect } from "react";
 import { MsgContext } from "./MsgContext";
-
+import TimeAgo from 'javascript-time-ago';
 
 const MyMsgs=()=>{
-    const History=useHistory()
+    const timeAgo = new TimeAgo('en-US')
     const {fetchConversations, myConversations, } = useContext(MsgContext)
     useEffect(() => {
         fetchConversations()
@@ -25,8 +24,8 @@ const MyMsgs=()=>{
                     <Msg key={el._id} to={`/my-messages/${el._id}`}>
                         <div>
                             <Title>{el.title}</Title>
-                            <p>{el.msgPrev}</p>
-                            <p>{el.date}</p>
+                            <MsgPrev>{el.msgPrev}</MsgPrev>
+                            <Time>{timeAgo.format(new Date(el.date), 'round-minute')}</Time>
                         </div>
                         {/* <DeleteIcon size="20" /> */} 
                         <Image src={el.image}></Image>
@@ -59,17 +58,21 @@ const Wrapper2= styled.div`
     
 `;
 const Titre= styled.div`
-
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--text-color);
 `;
 const Msg= styled(Link)`
     display: flex;
     justify-content: space-between;
     border: none;
     border-radius: 4px;
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 20px;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
     text-decoration: none;
+    margin-bottom: 5px;
+    color: var(--primary-color);
 `;
 
 const Icons=styled.div`
@@ -90,11 +93,24 @@ const PlusIcon= styled(AiOutlinePlus)`
 `
 const Title=styled.div`
     align-self: center;
+    font-weight: bold;
 `;
 const Image=styled.img`
-    width: 90px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 3px;
 `;
 const DeleteIcon=styled(AiOutlineDelete)`
     align-self: center;
     cursor: pointer;
+`
+const MsgPrev=styled.p`
+    color: var(--text-alter);
+    margin-top: 7px;
+`
+const Time=styled.p`
+    color: #aaa;
+    font-size: 15px;
+    margin-top: 10px;
 `

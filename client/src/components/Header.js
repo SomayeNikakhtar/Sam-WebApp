@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link,  useHistory } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/SamLogo.png";
+import logo from "../assets/Sam.png";
 import { UserContext } from "./UserContext";
 import { AiOutlineMenu,  } from "react-icons/ai";
 
@@ -43,19 +43,25 @@ const Header= ()=>{
                 <RightSide>
                 { myInfo &&
                     <DropDown>
-                        <Dropcheck id="dropcheck" type="checkbox"/>
+                        <Dropcheck id="dropcheck" type="checkbox"  onBlur={
+                            (ev)=> {
+                                window.setTimeout(()=>{
+                                    ev.target.checked=false
+                                }, 100)
+                                }
+                            }/>
                         <DropBtn for="dropcheck" > <AiOutlineMenu/> {myInfo.name} </DropBtn>
                         <Content>
-                            <Link to="/my-ads">My Ads</Link>
+                            <Link to="/my-ads" >My Ads</Link>
                             <Link to="/my-messages">My Messages</Link>
                             <Link to="/my-favorites">My Favorites</Link>
-                            <a onClick={()=>doSignOut()}>Sign Out</a>
+                            <Link to="#" onClick={()=>doSignOut()}>Sign Out</Link>
                         </Content>
                     </DropDown>}
                     { !myInfo &&
                         <>
                         <SignAction to={"/sign-up"}>Sign Up</SignAction> 
-                        or 
+                        <Or>or </Or>
                         <SignAction to={"/sign-in"} > Sign In</SignAction>
                         </>
                     }   
@@ -79,11 +85,10 @@ export default Header;
 const HeadWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    /* justify-content: space-between; */
     width: 100vw;
-    min-height: 60px;
-    background-color: orange;
-    margin: 0 auto;
+    min-height: 80px;
+    background-color: var(--primary-color);
+    color: var(--gray-color);
 `;
 const NavSection = styled.div`
     display: flex;
@@ -94,37 +99,33 @@ const NavSection = styled.div`
 `;
 const HomeButton = styled.button`
     background: none;
-    height: 35px;
-    width: auto;
     border: none;
-
-
+    margin-left:10px ;
     :hover {
         cursor: pointer;
     }
 `;
 const Logo = styled.img`
-    height: 40px;
-    width: auto;
-    border: 0;
-
+    width: 90px;
 `;
 const SignAction= styled(Link)`
-    color: white;
+    color: var(--gray-color);
     text-decoration: none;
     margin-right: 10px;
     margin-left: 5px;
+    align-self: center;
+    &:hover{
+        color: var(--hover-color);
+    }
 
 `;
 const RightSide=styled.div`
     font-weight: bold;
-    /* align-self: center; */
     display: flex;
 `;
 
 
 const DropDown=styled.div`
-    /* z-index: 1; */
     position: relative;
     display: inline-block;
 `;
@@ -132,17 +133,17 @@ const DropDown=styled.div`
 const Content=styled.div`
     display: none;
     position: absolute;
-    background-color: #f1f1f1;
+    background-color: var(--gray-color);
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     a{
-        color: black;
+        color: var(--primary-color);
         padding: 12px 16px;
         text-decoration: none;
         display: block;
         &:hover{
-            background-color: #ddd;
+            background-color: var(--hover-color);
         }
     }
 
@@ -150,14 +151,24 @@ const Content=styled.div`
 
 const PostAd=styled.button`
     margin-right: 10px;
-    margin-left: 10px;
+    margin-left: 20px;
+    background-color: var(--gray-color);
+    color: var(--primary-color);
+    padding: 5px;
+    border: 1px solid var(--primary-color);
+    border-radius: 1000px;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover{
+        background-color: var(--hover-color);
+    }
 `
 const DropBtn=styled.label`
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
+    background-color: var(--gray-color);
+    color: var(--primary-color);
+    padding: 8px;
+    border: 1px solid var(--primary-color) ;
+    border-radius: 1000px;
     position: relative;
     display:block;
     cursor:pointer;
@@ -169,6 +180,14 @@ const Dropcheck= styled.input`
         display: block;
     }
     &:checked + ${DropBtn} {
-        background-color: #3e8e41;
+        background-color: var(--hover-color);
     }
+   
+`
+const Or=styled.div`
+    color: var(--gray-color);
+    text-decoration: none;
+    margin-right: 10px;
+    margin-left: 5px;
+    align-self: center;
 `

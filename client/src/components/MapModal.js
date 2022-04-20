@@ -50,10 +50,10 @@ const Content = styled.div`
 `;
 
 const Button = styled.button`
-  background: #fff;
-  border: 1px solid red;
+  background: var(--gray-color);
+  border: 1px solid var(--primary-color);
   border-radius: 4px;
-  
+  color: var(--text-alter);
   cursor: pointer;
   font-size: 16px;
   font-weight: 700;

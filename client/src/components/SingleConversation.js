@@ -41,14 +41,16 @@ const SingleConversations=()=>{
                     return(
                         <>
                         <div>
-                            {el.sender===receiver && <>
-                                <Msg>{el.content}</Msg> 
-                                <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
-                            </>}
-                            {el.receiver===receiver && <Right>
-                                <Msg2>{el.content}</Msg2> 
-                                <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
-                            </Right>}
+                            {el.sender===receiver?  
+                                <>
+                                    <Msg>{el.content}</Msg> 
+                                    <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
+                                </> :
+                                <Right>
+                                    <Msg2>{el.content}</Msg2> 
+                                    <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
+                                </Right>}
+                            
                             
                         </div>
                         
@@ -64,8 +66,6 @@ const SingleConversations=()=>{
                         textareaRef.current.value=""
                     }}>send</Send>
             </FlexDiv>
-           
-            
         </Wrapper>
     )
 }
@@ -77,6 +77,7 @@ const Wrapper= styled.div`
     flex-grow: 1;
     max-width: 70%;
     margin-left: 70px;
+    color: var(--text-color);
     
 `;
 const Wrapper2= styled.div`
@@ -93,6 +94,7 @@ const Wrapper2= styled.div`
 const Titre= styled.div`
     margin-left: 15px;
     align-self: center;
+    font-weight: bold;
 `;
 const MsgBox= styled.div`
     display: flex;
@@ -111,8 +113,8 @@ const MsgBox= styled.div`
 
 const Msg=styled.div`
     /* align-self: center; */
-    border: 1px solid #ccc;
-    background-color: #ccc;
+    border: 1px solid var(--gray-color);
+    background-color: var(--gray-color);
     display:inline-block ;
     padding: 10px;
     border-radius: 5px;
@@ -120,8 +122,8 @@ const Msg=styled.div`
 const Msg2=styled.div`
     /* align-self: center; */
     /* text-align: right; */
-    border: 1px solid #11aef7;
-    background-color: #11aef7;
+    border: 1px solid var(--hover-color);
+    background-color: var(--hover-color);
     display:inline-block ;
     padding: 10px;
     border-radius: 5px;
@@ -130,12 +132,13 @@ const Msg2=styled.div`
 `;
 
 const Right=styled.div`
-    /* display: flex; */
-    /* flex-direction: column; */
     text-align: right;
 `
 const Image=styled.img`
-    width: 90px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 3px;
     
 `;
 const DeleteIcon=styled(AiOutlineDelete)`
@@ -147,14 +150,15 @@ const Textarea= styled.textarea`
     border: none;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
     margin-bottom: 10px;
+    resize: none;
 
 `
 const FlexDiv=styled.div`
     display: flex;
 `
 const Send=styled.button`
-    background-color: lightblue;
-    /* outline: none; */
+    background-color: var(--text-alter);
+    color: var(--gray-color);
     border: none;
     cursor: pointer;
     margin-bottom: 10px;

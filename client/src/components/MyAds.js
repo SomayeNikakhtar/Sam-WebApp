@@ -4,9 +4,11 @@ import { useHistory } from "react-router-dom";
 import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
+import TimeAgo from 'javascript-time-ago';
 
 
 const MyAds=()=>{
+    const timeAgo = new TimeAgo('en-US')
     const History=useHistory()
     const [myAdDetails, setMyAdDetails]=useState(null)
     useEffect(() => {
@@ -55,7 +57,7 @@ const MyAds=()=>{
                     <Ad key={el._id}>
                         <Title>
                         <Title>{el.title}</Title>
-                        <p>{el.date}</p>
+                        <Time>{timeAgo.format(new Date(el.date), 'round-minute')}</Time>
                         </Title>
                         
                         <EditIcon size="20"/>
@@ -95,15 +97,19 @@ const Wrapper2= styled.div`
 const Titre= styled.div`
     font-weight: bold;
     font-size: 20px;
+    color: var(--text-color);
 `;
 const Ad= styled.div`
     display: flex;
     justify-content: space-between;
     border: none;
     border-radius: 4px;
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 20px;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
+    margin-bottom: 5px;
+    color: var(--primary-color);
+    
 `;
 
 const Icons=styled.div`
@@ -127,7 +133,10 @@ const Title=styled.div`
     font-size: 18px;
 `;
 const Image=styled.img`
-    width: 90px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 3px;
 `;
 const DeleteIcon=styled(AiOutlineDelete)`
     align-self: center;
@@ -136,4 +145,9 @@ const DeleteIcon=styled(AiOutlineDelete)`
 const EditIcon=styled(BiEdit)`
     align-self: center;
     cursor: pointer ;
+`
+const Time=styled.p`
+    color: #aaa;
+    font-size: 15px;
+    margin-top: 10px;
 `

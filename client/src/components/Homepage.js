@@ -14,21 +14,21 @@ const Homepage=()=>{
     return(
         <>
             <Background>
-            <Wrapper2>
-            <div>
-                <h1>Find your dream residence.</h1>
-                <h3>Houses, condos and apartments for rent.</h3>
-            </div>
-            <div>
-                <form>
-                    <BsSearch/>
-                    <select onChange={(ev)=>onCityChange(ev.target.value)}>
-                        <option value="null">Which city do you want to live?</option>
+            <Wrapper>
+            <Titre>
+                <Title>Find your dream residence.</Title>
+                <Dec>Houses, condos and apartments for rent.</Dec>
+            </Titre>
+            <SearchBox>
+                <Inner>
+                    <SearchIcon/>
+                    <City onChange={(ev)=>onCityChange(ev.target.value)}>
+                        <option value="null"> Which city do you want to live?</option>
                         <option value="montreal" >Montreal</option>
-                    </select>
-                </form>
-            </div>
-            </Wrapper2>
+                    </City>
+                </Inner>
+            </SearchBox>
+            </Wrapper>
             </Background>
             
 
@@ -39,19 +39,51 @@ export default Homepage;
 
 const Background= styled.div`
     background-image: url(${house}) ;
-    /* background-size: contain; */
-    /* background-size: cover; */
     background-size:100% 100%;
-    /* object-fit: cover; */
     flex-grow: 1;
-    opacity: 0.7;
+    
     display: flex;
     align-items: center;
     justify-content: center;
+    
 `
-const Wrapper2= styled.div`
+const Wrapper= styled.div`
     display: flex;
     flex-direction: column;
     text-align: center;
-    /* opacity: 1; */
+    z-index: 1;
 `;
+
+const Titre=styled.div`
+    margin: 10px;
+`
+const Title=styled.h1`
+    font-size: 45px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 10px;
+`
+const Dec=styled.h3`
+    font-size: 20px;
+    color: var(--text-color);
+`
+const SearchBox=styled.div`
+    border-radius: 10px;
+    padding: 30px;
+    background-color: var(--gray-color);
+`
+const Inner=styled.form`
+    background-color: var(--hover-color);
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+`
+const City=styled.select`
+    border: none;
+`
+
+const SearchIcon=styled(BsSearch)`
+    align-self: center;
+    margin-right: 5px;
+`

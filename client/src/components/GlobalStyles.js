@@ -1,15 +1,14 @@
 import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
-    /* :root {
-      --primary-color: #cc5500;
-      --accent-bg-color: rgba(204, 85, 0, 0.1);
-      --page-horizontal-padding: 20px;
-      --header-height: 50px;
-      --max-content-width: 1200px;
-      --heading-font-family: 'Teko', sans-serif;
-      --user-img-width: 120px;
-    } */
+    :root {
+        --primary-color: #1B263B;
+        --text-color: #0D1B2A;
+        --text-alter: #415A77;
+        --hover-color: #778DA9;
+        --gray-color: #E0E1DD;
+    
+    }
 
     #root{
         height: 100vh;
@@ -57,12 +56,9 @@ export default createGlobalStyle`
         content: '';
         content: none;
     }
-    h1, h2, h3 {
-      color: var(--primary-color);
-      font-family: var(--heading-font-family);
-    }
-    h2 {
-      font-size: 28px;
-    }
+
+    
 `;
+
+
 
