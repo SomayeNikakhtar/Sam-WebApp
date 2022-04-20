@@ -13,6 +13,18 @@ const MyMsgs=()=>{
         fetchConversations()
     },[])
 
+    const updateConversations=()=>{  // fetch new messages which are after the last message
+        // console.log(MyMsgs)
+        const date = myConversations.length > 0 ? myConversations[myConversations.length-1].date : undefined
+        if (date)
+            fetchConversations(date)
+    }
+    useEffect(() => {// run whenver MyMsgs change
+        const IntervalId= setInterval(updateConversations, 2000);
+        return ()=> {clearInterval(IntervalId)}
+    }, [myConversations])
+
+
     if (!myConversations) return <></>
     return(
         <Wrapper>

@@ -11,18 +11,33 @@ const SingleConversations=()=>{
     
     const timeAgo = new TimeAgo('en-US')
     const History=useHistory()
-    const {fetchMessages, MyMsgs, myConversations, getMyConversations, sendMsg} = useContext(MsgContext)
+    const {fetchMessages, MyMsgs, myConversations, getMyConversations, sendMsg, clearMessages} = useContext(MsgContext)
     const {myInfo}=useContext(UserContext)
     const textareaRef = useRef()
     
     const {id}= useParams()
     
     const thisConversation= myConversations?.find((el)=>el._id===id)
-    useEffect(() => {
+
+    
+
+    useEffect(() => { //run once
         getMyConversations()
+        clearMessages()
         fetchMessages(id)
         
     },[])
+
+    const updateMessages=()=>{  // fetch new messages which are after the last message
+        // console.log(MyMsgs)
+        const date = MyMsgs.length > 0 ? MyMsgs[MyMsgs.length-1].date : undefined
+        if (date)
+            fetchMessages(id, date)
+    }
+    useEffect(() => {// run whenver MyMsgs change
+        const IntervalId= setInterval(updateMessages, 2000);
+        return ()=> {clearInterval(IntervalId)}
+    }, [MyMsgs])
 
 
     if (!MyMsgs || !thisConversation || !myInfo ) return <></>
@@ -43,7 +58,7 @@ const SingleConversations=()=>{
                         <div>
                             {el.sender===receiver?  
                                 <>
-                                    <Msg>{el.content}</Msg> 
+                                    <Msg>{receiver} : {el.content}</Msg> 
                                     <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
                                 </> :
                                 <Right>
