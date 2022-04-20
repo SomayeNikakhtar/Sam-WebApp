@@ -1,5 +1,5 @@
-import { useContext} from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect} from "react";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AdContext } from "./AdContext";
 import Filters from "./Filters";
@@ -7,14 +7,20 @@ import TimeAgo from 'javascript-time-ago';
 
 const AdsList=()=>{
     const timeAgo = new TimeAgo('en-US')
-    const {ads}= useContext(AdContext)
+    const {ads, fetchAds}= useContext(AdContext)
+    let { page } = useParams();
+    page = parseInt(page)
+    const itemsPerPage = 8;
+    useEffect(()=>{
+      fetchAds({}, page, itemsPerPage)    
+    },[page])
 
     if (!ads) return <></>
     return(
     <>
         <Wrapper>
             <RightSide>
-                <Filters/>
+                <Filters page={page} itemsPerPage={itemsPerPage}/>
             </RightSide>
             <Main>
                 <Title>Rentals in Montreal, QC</Title>
@@ -32,8 +38,19 @@ const AdsList=()=>{
                         );
                     })}
                 </AdsContainer>
+                <FlexDiv>
+                  <Browse hide={page <= 1} to={`/motreal-ads/${page - 1}`}>
+                    Previous
+                  </Browse>
+                  <Browse
+                    hide={ads.length !== itemsPerPage}
+                    to={`/motreal-ads/${page + 1}`}
+                  >
+                    Next
+                  </Browse>
+              </FlexDiv>
             </Main>
-
+            
         </Wrapper>
     </>
     )
@@ -45,6 +62,7 @@ const Wrapper=styled.div`
     flex-grow: 1;
     padding: 10px;
     color: var(--text-color);
+    
 `;
 const Title = styled.div`
   color: var(--text-color);
@@ -63,6 +81,7 @@ const Main=styled.div`
     flex-basis: 90%;
     margin:5px;
     padding: 10px;
+    
 `;
 
 const AdsContainer = styled.div`
@@ -71,7 +90,7 @@ const AdsContainer = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   width: 1000px;
-  height: 100%;
+  /* height: 100%; */
 `;
 
 const ItemContainer = styled(Link)`
@@ -117,3 +136,33 @@ const Price=styled.p`
 const Sub=styled.div`
   line-height: 20px;
 `
+
+const Browse = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--gray-color);
+  padding: 5px;
+  border-radius: 3px;
+  font-size: bold;
+  font-optical-sizing: auto;
+  text-decoration: none;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  visibility: ${({ hide }) => (hide ? "hidden" : "visible")};
+  :hover {
+    background-color: var(--hover-color);
+    text-decoration: none;
+  }
+`;
+
+const FlexDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  /* width: 950px; */
+  /* height: 75px; */
+  /* font-family: sans-serif; */
+  /* font-size: 0.75em; */
+`;

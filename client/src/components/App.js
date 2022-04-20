@@ -39,7 +39,7 @@ function App() {
                 <Route exact path="/new">
                     <Post />
                 </Route>
-                <Route exact path="/motreal-ads">
+                <Route exact path="/motreal-ads/:page">
                     <AdsList />
                 </Route>
                 <Route exact path="/sign-up">
@@ -57,7 +57,7 @@ function App() {
                 <Route exact path="/my-ads">
                     <MyAds />
                 </Route>
-                <Route exact path="/my-favorites">
+                <Route exact path="/under-construction">
                     <MyFavs />
                 </Route>
             </Switch>

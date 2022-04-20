@@ -88,7 +88,7 @@ const loadAdsByOwner=async(owner)=>{
         console.log(err.stack)
     }
 }
-const loadAdsByFilter=async(filters)=>{
+const loadAdsByFilter=async(filters, page, limit)=>{
     const sortObj={}
     if(filters.sortBy==="lowest")
         sortObj.price=1
@@ -124,6 +124,8 @@ const loadAdsByFilter=async(filters)=>{
         const result = await db.collection("advertisements")
         .find(findObj)
         .sort(sortObj)
+        .skip((page-1)*limit)
+        .limit(limit)
         .toArray()
         
         return result;        
@@ -184,20 +186,27 @@ const insertMsg=async(sender, receiver, content, adId)=>{
     return {result: result.acknowledged, msgInfo:msgInfo};
 
 }
-const getConversations=async(userId)=>{
+const getConversations=async(userId, date)=>{
     const db = await getClientDB();
     const sortObj={date:-1}
-    const result = await db.collection("conversations").find({$or:[{user1:userId}, {user2:userId}]})
+    const filterObj = {$or:[{user1:userId}, {user2:userId}]}
+    
+    if(date)
+        filterObj.date= {$gt:new Date(date)}
+    const result = await db.collection("conversations").find(filterObj)
         .sort(sortObj)
         .toArray();
     return result;
 }
 
-const getConversationMsgs=async(userId, conversationId)=>{
+const getConversationMsgs=async(userId, conversationId, date)=>{
     const db = await getClientDB();
     const conv=await db.collection("conversations").findOne({_id:new ObjectId(conversationId)})
     if (conv &&(conv.user1===userId || conv.user2===userId)){
-        const result = await db.collection("messages").find({conversationId:new ObjectId(conversationId)}).toArray();
+        const filterObj={conversationId:new ObjectId(conversationId)}
+        if(date)
+            filterObj.date= {$gt:new Date(date)}
+        const result = await db.collection("messages").find(filterObj).toArray();
         return result;
     }else{
         return [];

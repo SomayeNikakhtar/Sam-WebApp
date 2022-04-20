@@ -9,7 +9,7 @@ const Homepage=()=>{
     const History = useHistory();
     const onCityChange=(value)=>{
         if (value=== "montreal")
-            History.push("/motreal-ads")
+            History.push("/motreal-ads/1")
     }
     return(
         <>

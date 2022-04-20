@@ -86,8 +86,8 @@ express()
 .get("/api/myAds", ensureLoggedIn, getMyAds)
 .delete("/api/deleteAd/:id", ensureLoggedIn, deleteAd)
 .post("/api/sendMessage", ensureLoggedIn , sendMessage)
-.get("/api/myConversations",ensureLoggedIn,  getMyConversations)
-.get("/api/myConversations/:id" , ensureLoggedIn, getMyMsgs)
+.post("/api/myConversations",ensureLoggedIn,  getMyConversations)
+.post("/api/myConversations/:id" , ensureLoggedIn, getMyMsgs)
 //
 
 // .get("*", (req, res) => {

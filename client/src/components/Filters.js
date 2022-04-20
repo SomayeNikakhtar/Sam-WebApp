@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import { AdContext } from "./AdContext";
 
-const Filters=()=>{
+const Filters=({page, itemsPerPage})=>{
     
     const filterObj={}
     const[filters, setFilters]=useState(filterObj)
@@ -104,7 +104,7 @@ const Filters=()=>{
                 </Options>
                 <FlexDiv2> 
                     <Button onClick={()=>{
-                        fetchAds(filters)
+                        fetchAds(filters, page, itemsPerPage)
                     }}>See Results</Button>   
                 </FlexDiv2>        
         </Wrapper>

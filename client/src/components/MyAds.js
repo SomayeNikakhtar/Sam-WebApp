@@ -54,14 +54,20 @@ const MyAds=()=>{
             </Wrapper2>
             {myAdDetails.map((el, ind)=>{
                 return(
-                    <Ad key={el._id}>
+                    <Ad key={el._id} onClick={()=>{History.push(`/advertisement-details/${el._id}`)}}>
                         <Title>
                         <Title>{el.title}</Title>
                         <Time>{timeAgo.format(new Date(el.date), 'round-minute')}</Time>
                         </Title>
                         
-                        <EditIcon size="20"/>
-                        <DeleteIcon size="20" onClick={()=>deleteAd(el._id, ind)}/>
+                        <EditIcon size="20" onClick={(ev)=>{
+                            ev.stopPropagation();
+                            History.push("/under-construction")
+                        }}/>
+                        <DeleteIcon size="20" onClick={(ev)=>{
+                            deleteAd(el._id, ind);
+                            ev.stopPropagation();
+                        }}/>
                         <Image src={el.images[0]}></Image>
 
                     </Ad>
@@ -109,6 +115,7 @@ const Ad= styled.div`
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
     margin-bottom: 5px;
     color: var(--primary-color);
+    cursor: pointer;
     
 `;
 

@@ -3,10 +3,11 @@ const { createContext, useState, useEffect } = require("react");
 export const AdContext=createContext(null)
 export const AdProvider=({children})=>{
     const [ads, setAds]=useState([])
-    const fetchAds=(filters)=>{
+
+    const fetchAds=(filters, page = 1, limit=8)=>{
         fetch("/api/ads",{
             method: 'POST',
-            body: JSON.stringify(filters),
+            body: JSON.stringify({filters, page, limit}),
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -27,9 +28,7 @@ export const AdProvider=({children})=>{
     }
 
 
-    useEffect(()=>{
-        fetchAds()    
-    },[])
+    
     return(
         <AdContext.Provider
             value={{
