@@ -184,7 +184,10 @@ const insertMsg=async(sender, receiver, content, adId)=>{
 }
 const getConversations=async(userId)=>{
     const db = await getClientDB();
-    const result = await db.collection("conversations").find({$or:[{user1:userId}, {user2:userId}]}).toArray();
+    const sortObj={date:-1}
+    const result = await db.collection("conversations").find({$or:[{user1:userId}, {user2:userId}]})
+        .sort(sortObj)
+        .toArray();
     return result;
 }
 
