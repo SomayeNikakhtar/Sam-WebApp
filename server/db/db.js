@@ -76,7 +76,9 @@ const loadAdById=async(id)=>{
 const loadAdsByOwner=async(owner)=>{
     try{
         const db = await getClientDB();
-        const result = await db.collection("advertisements").find({owner: owner}).toArray()
+        const result = await db.collection("advertisements").find({owner: owner})
+        .sort({date:-1})
+        .toArray()
         
         if (result)
             return result
