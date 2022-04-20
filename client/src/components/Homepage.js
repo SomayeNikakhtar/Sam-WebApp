@@ -56,34 +56,34 @@ const Wrapper= styled.div`
 
 const Titre=styled.div`
     margin: 10px;
-`
+`;
 const Title=styled.h1`
     font-size: 45px;
     font-weight: bold;
     color: var(--text-color);
     margin: 10px;
-`
+`;
 const Dec=styled.h3`
     font-size: 20px;
     color: var(--text-color);
-`
+`;
 const SearchBox=styled.div`
     border-radius: 10px;
     padding: 30px;
     background-color: var(--gray-color);
-`
+`;
 const Inner=styled.form`
     background-color: var(--hover-color);
     padding: 10px;
     display: flex;
     justify-content: center;
     border-radius: 10px;
-`
+`;
 const City=styled.select`
     border: none;
-`
+`;
 
 const SearchIcon=styled(BsSearch)`
     align-self: center;
     margin-right: 5px;
-`
+`;

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
-import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineDelete} from "react-icons/ai";
 import { useContext, useEffect, useRef } from "react";
 import { MsgContext } from "./MsgContext";
 import TimeAgo from 'javascript-time-ago';
 import { UserContext } from "./UserContext";
+import Loader from "./Loader";
 
 
 const SingleConversations=()=>{
@@ -40,7 +41,7 @@ const SingleConversations=()=>{
     }, [MyMsgs])
 
 
-    if (!MyMsgs || !thisConversation || !myInfo ) return <></>
+    if (!MyMsgs || !thisConversation || !myInfo ) return <Loader></Loader>
     
     
     const receiver=myInfo._id===thisConversation.user1  ? thisConversation.user2 : thisConversation.user1
@@ -55,20 +56,17 @@ const SingleConversations=()=>{
                 {MyMsgs.map((el, ind)=>{
                     return(
                         <>
-                        <div>
-                            {el.sender===receiver?  
-                                <>
-                                    <Msg>{receiver} : {el.content}</Msg> 
-                                    <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
-                                </> :
-                                <Right>
-                                    <Msg2>{el.content}</Msg2> 
-                                    <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
-                                </Right>}
-                            
-                            
-                        </div>
-                        
+                            <div>
+                                {el.sender===receiver?  
+                                    <>
+                                        <Msg>{el.content}</Msg> 
+                                        <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
+                                    </> :
+                                    <Right>
+                                        <Msg2>{el.content}</Msg2> 
+                                        <Time>{timeAgo.format(new Date(el.date), 'mini-minute-now')}</Time>
+                                    </Right>}
+                            </div>
                         </>
                     )
                 })}
@@ -97,14 +95,11 @@ const Wrapper= styled.div`
 `;
 const Wrapper2= styled.div`
     display: flex;
-    /* justify-content: space-between; */
     border: none;
     border-radius: 4px;
     margin-top: 40px;
     padding: 20px;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
-    
-    
 `;
 const Titre= styled.div`
     margin-left: 15px;
@@ -113,7 +108,6 @@ const Titre= styled.div`
 `;
 const MsgBox= styled.div`
     display: flex;
-    /* justify-content: space-between; */
     flex-direction: column;
     border: none;
     border-radius: 4px;
@@ -121,11 +115,9 @@ const MsgBox= styled.div`
     padding: 20px;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
     text-decoration: none;
-   
     height: 500px;
     overflow-y: scroll
 `;
-
 const Msg=styled.div`
     /* align-self: center; */
     border: 1px solid var(--gray-color);
@@ -136,14 +128,11 @@ const Msg=styled.div`
 `;
 const Msg2=styled.div`
     /* align-self: center; */
-    /* text-align: right; */
     border: 1px solid var(--hover-color);
     background-color: var(--hover-color);
     display:inline-block ;
     padding: 10px;
     border-radius: 5px;
-
-    
 `;
 
 const Right=styled.div`
@@ -156,31 +145,25 @@ const Image=styled.img`
     border-radius: 3px;
     
 `;
-const DeleteIcon=styled(AiOutlineDelete)`
-    align-self: center;
-    cursor: pointer;
-`
 const Textarea= styled.textarea`
     width: 100%;
     border: none;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
     margin-bottom: 10px;
     resize: none;
-
-`
+`;
 const FlexDiv=styled.div`
     display: flex;
-`
+`;
 const Send=styled.button`
     background-color: var(--text-alter);
     color: var(--gray-color);
     border: none;
     cursor: pointer;
     margin-bottom: 10px;
-
-`
+`;
 const Time=styled.p`
     color: #bbb;
     font-size: small;
     margin-bottom: 10px;
-`
+`;

@@ -1,4 +1,5 @@
-const { createContext, useState, useEffect } = require("react");
+const { createContext, useState} = require("react");
+
 
 export const AdContext=createContext(null)
 export const AdProvider=({children})=>{
@@ -26,9 +27,6 @@ export const AdProvider=({children})=>{
                 console.log(err)
         })
     }
-
-
-    
     return(
         <AdContext.Provider
             value={{

@@ -117,7 +117,7 @@ export default Filters;
 const Wrapper=styled.div`
     color: var(--text-color);
     line-height: 25px;
-`
+`;
 const Title = styled.div`
     font-weight: bold;
     font-size: 20px;
@@ -128,17 +128,17 @@ const FlexDiv=styled.div`
 const Filter=styled.span`
     font-weight: bold;
     color: var(--primary-color);
-`
+`;
 const MinMax=styled.input`
     width: 100px;
-`
+`;
 const Span=styled.span`
     margin-left: 5px;
     margin-right: 5px;
-`
+`;
 const Options=styled.div`
     color: var(--text-alter);
-`
+`;
 const Button=styled.button`
     background-color: var(--text-alter);
     border: none;
@@ -147,7 +147,7 @@ const Button=styled.button`
     padding: 8px;
     margin-top: 10px;
     font-size: 18px;
-`
+`;
 const FlexDiv2=styled.div`
     display: flex;
     align-items: center;

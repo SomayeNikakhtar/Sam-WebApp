@@ -97,10 +97,9 @@ const FlexDiv2=styled.div`
     display: flex;
     margin-right: 10px;
     justify-content: space-between;
-    
 `;
 const App=styled(AppStore)`
   margin-right: 30px;
-`
+`;
 
 export default Footer;

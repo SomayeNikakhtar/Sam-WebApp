@@ -75,7 +75,9 @@ const SignIn=()=>{
                 </Form>
                 <Auth>Or sign in with</Auth>
                 <Link>
-                <Google src={logo}/>
+                <Google src={logo} onClick={()=>{
+                            History.push("/under-construction")
+                        }}/>
                 </Link>
             </Container>
         </Wrapper>
@@ -92,23 +94,19 @@ const Wrapper=styled.div`
     align-items: center;
 `;
 const Form= styled.form`
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
 `;
 const Container=styled.div`
     position: relative;
     width: 400px;
     padding: 20px 40px;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
-`
+`;
 const Field = styled.div`
     margin: 25px 0;
     position: relative;
     height: 50px;
     width: 100%;
-`
+`;
 
 const Show=styled.span`
     position: absolute;
@@ -121,9 +119,7 @@ const Show=styled.span`
     cursor: pointer;
     user-select: none;
     visibility: hidden;
-    /* font-family: 'Open Sans', sans-serif; */
-
-`
+`;
 
 const Input= styled.input`
     height: 100%;
@@ -148,7 +144,7 @@ const Input= styled.input`
         visibility: visible;
     }
 
-`
+`;
 
 const Lable= styled.label`
     position: absolute;
@@ -159,24 +155,7 @@ const Lable= styled.label`
     color: grey;
     font-size: 18px;
     transition: .4s;
-`
-const Button=styled.div`
-    margin: 25px 0;
-    position: relative;
-    height: 50px;
-    width: 100%;
-    margin-top: 30px;
-    overflow: hidden;
-    z-index: 111;
-    
-    &:hover{
-        .inner{
-            left: 0;
-        }    
-    }
-`
-
-
+`;
 const SignInBtn=styled.button`
     width: 100%;
     cursor: pointer;
@@ -188,24 +167,21 @@ const SignInBtn=styled.button`
     margin-top: 10px;
     font-size: 18px; 
     
-`
+`;
 const Auth=styled.div`
     margin: 35px 0 20px 0;
     font-size: 19px;
-    
-    
-`
+`;
 const Link= styled.div`
     display: flex;
     cursor: pointer;
     justify-content: center;
     align-items: center;
-   
-`
+`;
 const Google= styled.img`
     width: 30%;
     cursor: pointer;
-`
+`;
 const Remember= styled.div`
     background-color: #f2f2f2;
     padding: 10px;
@@ -214,11 +190,10 @@ const Remember= styled.div`
     border-radius: 5px;
 `;
 const ErrorMsg=styled.div`
-
-`
+`;
 const Title = styled.div`
-  color: var(--text-color);
-  font-weight: bold;
-  font-size: 25px;
-  margin: 0px 20px 20px 20px;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 25px;
+    margin: 0px 20px 20px 20px;
 `;

@@ -2,12 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { useParams} from "react-router-dom";
 import styled from "styled-components";
 import Slideshow from "./Slideshow";
-import { FiShare2,  } from "react-icons/fi";
-import { BsBookmark } from "react-icons/bs";
 import { BiBuildingHouse, BiBath } from "react-icons/bi";
 import { RiHotelBedLine } from "react-icons/ri";
 import MapModal from "./MapModal";
 import { MsgContext } from "./MsgContext";
+import { UserContext } from "./UserContext";
+import Loader from "./Loader";
 
 
 const AdDetails= ()=>{
@@ -15,6 +15,7 @@ const AdDetails= ()=>{
     const [showMap,setShowMap]=useState(false)
     const {id}= useParams()
     const {sendMsg}= useContext(MsgContext)
+    const {myInfo} = useContext(UserContext)
     const [msgContent, setMsgContent]=useState("")
     const [isMsgSent, setIsMsgSent] = useState(false)
 
@@ -32,161 +33,159 @@ const AdDetails= ()=>{
     },[])
     console.log(adDetails)
 
-    
+    if (!adDetails) return <Loader></Loader>
 
-    if (!adDetails) return <></>
-
-    return(<>
-        <Title1>Advertisement Details</Title1>
+    return(
         <Wrapper>
-            
-            
-            <Details1>
-                
-                <Box>
-                <FlexDiv>
-                    <Title>{adDetails.title}</Title>
-                    <Price>${adDetails.price} / month</Price>
-                </FlexDiv>
-                <div>
-                    <FlexDiv2>
-                    <p>{adDetails.city} - {adDetails.stNum}  {adDetails.stName} -  {adDetails.postalCode}</p>
-                    <Map onClick={()=> setShowMap(true)}>(View On Map)</Map>
-                    {showMap && <MapModal onCloseFunc={()=>setShowMap(false)} center={[parseFloat(adDetails.lat), parseFloat(adDetails.lng)]} />}
-                    </FlexDiv2>
-                    <FlexDiv2>
+            <Title1>Advertisement Details</Title1>
+            <Wrapper2>
+                <Details1> 
+                    <Box>
+                        <FlexDiv>
+                            <Title>{adDetails.title}</Title>
+                            <Price>${adDetails.price} / month</Price>
+                        </FlexDiv>
+                    <div>
                         <FlexDiv2>
-                            <BiBuildingHouse size="20"/>
-                            <Span>{adDetails.unitType}</Span>
+                            <p>{adDetails.city} - {adDetails.stNum}  {adDetails.stName} -  {adDetails.postalCode}</p>
+                            <Map onClick={()=> setShowMap(true)}>(View On Map)</Map>
+                            {showMap && <MapModal onCloseFunc={()=>setShowMap(false)} center={[parseFloat(adDetails.lat), parseFloat(adDetails.lng)]} />}
                         </FlexDiv2>
-                        <H>|</H>
                         <FlexDiv2>
-                            <RiHotelBedLine size="20"/>
-                            <Span>Bedrooms: {adDetails.bedrooms}</Span>
+                            <FlexDiv2>
+                                <BiBuildingHouse size="20"/>
+                                <Span>{adDetails.unitType}</Span>
+                            </FlexDiv2>
+                            <H>|</H>
+                            <FlexDiv2>
+                                <RiHotelBedLine size="20"/>
+                                <Span>Bedrooms: {adDetails.bedrooms}</Span>
+                            </FlexDiv2>
+                            <H>|</H>
+                            <FlexDiv2>
+                                <BiBath size="20"/>
+                                <Span>Bathrooms: {adDetails.bathrooms}</Span>
+                            </FlexDiv2>
                         </FlexDiv2>
-                        <H>|</H>
-                        <FlexDiv2>
-                            <BiBath size="20"/>
-                            <Span>Bathrooms: {adDetails.bathrooms}</Span>
-                        </FlexDiv2>
-                    </FlexDiv2>
-                </div>
-                </Box>
-                
-                
-                
-                <Specification>
-                    <Overview>
-                        <H>Overview</H>
-                        <P>Utilities Included </P>
-                        { adDetails.utilities.hydro &&
-                            <><Span>Hydro </Span><br/></>
-                        }
-                        {adDetails.utilities.heat &&
-                            <><Span>Heat </Span><br/></>
-                        }
-                        {adDetails.utilities.water &&   
-                            <><Span>Water</Span><br/></>
-                        }
-                        {!adDetails.utilities.hydro && !adDetails.utilities.heat && !adDetails.utilities.water &&
-                            <><Span>Not Included</Span><br/></>
-                        }
-                        <P>Wi-Fi and More</P>
-                        {adDetails.utilities.tv &&
-                            <><Span>Tv(Cable)</Span><br/></>
-                        }
-                        {adDetails.utilities.internet &&
-                            <><Span>Internet </Span><br/></>
-                        }
-                        {!adDetails.utilities.tv && !adDetails.utilities.internet &&
-                            <><Span>Not Included</Span><br/></>
-                        }
-                        <P>Parking Included</P>
-                        <Span>{adDetails.parking}</Span><br/>
-                        <P>Pet Friendly</P>
-                        <Span>{adDetails.pet}</Span>
-                    </Overview>
-                    <Overview>
-                        <H>The Unit</H>
-                        <P>Furnished</P>
-                        <Span>{adDetails.furniture}</Span><br/>
-                        <P>Apliances</P>
-                        {adDetails.apliances.laundryInUnit &&
-                            <><Span>Laundry(In Unit) </Span><br/></>
-                        }
-                        {adDetails.apliances.laundryInBuilding &&
-                            <><Span>Laundry(In Building) </Span><br/></>
-                        }
-                        {adDetails.apliances.dishwasher &&
-                            <><Span>Dishwasher</Span><br/></>
-                        }
-                        {adDetails.apliances.fridge &&
-                            <><Span>Fridge / Freezer</Span><br/></>
-                        }
-                        {!adDetails.apliances.laundryInUnit && !adDetails.apliances.laundryInBuilding && !adDetails.apliances.dishwasher && !adDetails.apliances.fridge &&
-                            <><Span>Not Included</Span><br/></>
-                        }
-                        <P>Air Conditioning</P>
-                        <Span>{adDetails.air}</Span><br/>
-                        <P>Personal Outdoor Space</P>
-                        {adDetails.outdoorSpc.yard && 
-                            <><Span>Yard</Span><br/></>
-                        }
-                        {adDetails.outdoorSpc.balcony &&
-                            <><Span>Balcony</Span><br/></>
-                        }
-                        {!adDetails.outdoorSpc.yard && !adDetails.outdoorSpc.balcony &&
-                            <><Span>Not Included</Span><br/></>
-                        }
-                        <P>Smoking Permitted</P>
-                        <Span>{adDetails.smoke}</Span><br/>
-                    </Overview>
-                </Specification>
-                <Description><H>Description</H> <br/>{adDetails.description}</Description>
-            </Details1>
-            <FlexDiv3>
-            <Details2>
-                <Slideshow images={adDetails.images}></Slideshow>
-                {!isMsgSent ? 
-                    <>
-                        <Msg rows="4" placeholder="Your Message" onChange={(ev)=>setMsgContent(ev.target.value)}></Msg>
-                        <Button onClick={() =>  {
-                                sendMsg({receiver:adDetails.owner ,content:msgContent, adId:adDetails._id})
-                                .then((res)=>{
-                                    if (res) setIsMsgSent(true)
-                                    //setIsMsgSent(res)
-                                })
-                            }}>Send message</Button>
-                    </> : 
-                    <Alert>Your message is sent!</Alert>
-                }
-            </Details2>
-            <Box2>
+                    </div>
+                    </Box>
+                    <Specification>
+                        <Overview>
+                            <H>Overview</H>
+                            <P>Utilities Included </P>
+                            { adDetails.utilities.hydro &&
+                                <><Span>Hydro </Span><br/></>
+                            }
+                            {adDetails.utilities.heat &&
+                                <><Span>Heat </Span><br/></>
+                            }
+                            {adDetails.utilities.water &&   
+                                <><Span>Water</Span><br/></>
+                            }
+                            {!adDetails.utilities.hydro && !adDetails.utilities.heat && !adDetails.utilities.water &&
+                                <><Span>Not Included</Span><br/></>
+                            }
+                            <P>Wi-Fi and More</P>
+                            {adDetails.utilities.tv &&
+                                <><Span>Tv(Cable)</Span><br/></>
+                            }
+                            {adDetails.utilities.internet &&
+                                <><Span>Internet </Span><br/></>
+                            }
+                            {!adDetails.utilities.tv && !adDetails.utilities.internet &&
+                                <><Span>Not Included</Span><br/></>
+                            }
+                            <P>Parking Included</P>
+                            <Span>{adDetails.parking}</Span><br/>
+                            <P>Pet Friendly</P>
+                            <Span>{adDetails.pet}</Span>
+                        </Overview>
+                        <Overview>
+                            <H>The Unit</H>
+                            <P>Furnished</P>
+                            <Span>{adDetails.furniture}</Span><br/>
+                            <P>Apliances</P>
+                            {adDetails.apliances.laundryInUnit &&
+                                <><Span>Laundry(In Unit) </Span><br/></>
+                            }
+                            {adDetails.apliances.laundryInBuilding &&
+                                <><Span>Laundry(In Building) </Span><br/></>
+                            }
+                            {adDetails.apliances.dishwasher &&
+                                <><Span>Dishwasher</Span><br/></>
+                            }
+                            {adDetails.apliances.fridge &&
+                                <><Span>Fridge / Freezer</Span><br/></>
+                            }
+                            {!adDetails.apliances.laundryInUnit && !adDetails.apliances.laundryInBuilding && !adDetails.apliances.dishwasher && !adDetails.apliances.fridge &&
+                                <><Span>Not Included</Span><br/></>
+                            }
+                            <P>Air Conditioning</P>
+                            <Span>{adDetails.air}</Span><br/>
+                            <P>Personal Outdoor Space</P>
+                            {adDetails.outdoorSpc.yard && 
+                                <><Span>Yard</Span><br/></>
+                            }
+                            {adDetails.outdoorSpc.balcony &&
+                                <><Span>Balcony</Span><br/></>
+                            }
+                            {!adDetails.outdoorSpc.yard && !adDetails.outdoorSpc.balcony &&
+                                <><Span>Not Included</Span><br/></>
+                            }
+                            <P>Smoking Permitted</P>
+                            <Span>{adDetails.smoke}</Span><br/>
+                        </Overview>
+                    </Specification>
+                </Details1>
+                <FlexDiv3>
+                <Details2>
+                    <Slideshow images={adDetails.images}></Slideshow>
+                    {!isMsgSent ? 
+                        <>
+                            <Msg rows="4" placeholder="Your Message" onChange={(ev)=>setMsgContent(ev.target.value)}></Msg>
+                            <Button disabled={!myInfo} onClick={() =>  {
+                                    sendMsg({receiver:adDetails.owner ,content:msgContent, adId:adDetails._id})
+                                    .then((res)=>{
+                                        if (res) setIsMsgSent(true)
+                                        //setIsMsgSent(res)
+                                    })
+                                }}>Send message</Button>
+                        </> : 
+                        <Alert>Your message is sent!</Alert>
+                    }
+                </Details2>
+                {/* <Box2>
                     <button>Contact Info</button>
                     <FiShare2></FiShare2>
                     <BsBookmark></BsBookmark>
-                </Box2>
-            </FlexDiv3>
-            <Details3/>
-        </Wrapper>
-        </>
+                </Box2> */}
+                </FlexDiv3>
+                <Details3/>
+            </Wrapper2>
+            <Description><H>Description</H>{adDetails.description}</Description>
+            </Wrapper>
     );
 }
 
 
 export default AdDetails;
-
 const Wrapper=styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+`;
+const Wrapper2=styled.div`
 display: flex;
 flex-grow: 1;
-padding: 20px;
+padding: 20px 20px 10px 20px;
 color: var(--text-color);
-
-`
+`;
 const Details1= styled.div`
     width: 70%;
     margin-right: 20px;
-   
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 const Title= styled.h2`
@@ -209,7 +208,6 @@ const FlexDiv3=styled.div`
     display: flex;
     flex-direction: column;
     width: 30%;
-    
 `
 const Map=styled.button`
     margin-left: 5px;
@@ -221,27 +219,28 @@ const Map=styled.button`
 
 const Description= styled.div`
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
-    margin-top: 10px;
+    /* margin-top: 10px; */
     padding: 10px;
     border-radius: 3px;
+    line-height: 25px;
+    white-space: pre-wrap;
+    width: 85%;
+    margin: 0px 10px 10px 20px;
 `;
 const Details2= styled.div`
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px 20px 43px 20px;
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
     border-radius: 3px;
-
-
+    height: 100%;
 `;
 const Details3=styled.div`
     width: 15%;
-
 `;
 const Specification=styled.div`
     display: flex;
     justify-content: space-between;
-    margin: 10px 0px;
     border-radius: 3px;
 `;
 const Overview= styled.div`
@@ -262,16 +261,16 @@ const P=styled.p`
     margin-bottom: 7px;
     margin-top: 10px;
     font-weight: bold;
-`
+`;
 const Span= styled.span`
     margin-left: 8px;
     color: var(--text-alter);
-`
+`;
 const Title1 = styled.div`
-  color: var(--text-color);
-  font-weight: bold;
-  font-size: 25px;
-  margin: 10px 20px 0px 20px;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 25px;
+    margin: 10px 20px 0px 20px;
 `;
 const Box=styled.div`
     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
@@ -279,18 +278,18 @@ const Box=styled.div`
     padding: 10px;
     border-radius: 3px;
     line-height: 25px;
-`
-const Box2=styled.div`
-    box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
-    margin: 10px 0px;
-    padding: 10px;
-    border-radius: 3px;
-`
+`;
+// const Box2=styled.div`
+//     box-shadow: 6px 10px 79px 10px rgba(184,178,184,1);
+//     margin: 10px 0px;
+//     padding: 10px;
+//     border-radius: 3px;
+// `
 const Msg=styled.textarea`
     resize: none;
     border: 1px solid var(--primary-color);
     border-radius: 3px;
-`
+`;
 const Button=styled.button`
     background-color: var(--text-alter);
     border: none;
@@ -299,7 +298,10 @@ const Button=styled.button`
     padding: 8px;
     margin-top: 10px;
     font-size: 18px;
-`
+    &:disabled{
+    cursor: not-allowed;
+    }
+`;
 const Alert=styled.button`
     background: var(--hover-color);
     border: 1px solid var(--primary-color);
@@ -311,4 +313,4 @@ const Alert=styled.button`
     padding: 10px 16px 8px;
     margin: 8px;
     transition: all .5s ease-in-out;
-`
+`;

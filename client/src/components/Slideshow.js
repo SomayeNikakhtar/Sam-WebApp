@@ -37,13 +37,11 @@ const Slideshow=({images})=> {
             >
                 {images.map((src, index) => (
                 <Slide
-                    
                     key={index}
                     src={src}
                 ></Slide>
                 ))}
             </SlideshowSlider>
-
             <SlideshowDots >
                 {images.map((_, idx) => (
                 <SlideshowDot
@@ -61,9 +59,7 @@ const Slideshow=({images})=> {
 export default Slideshow;
 
 const SlideshowC= styled.div`
-    /* margin: 0 auto; */
     overflow: hidden;
-    /* max-width: 500px; */
 `;
 
 const SlideshowSlider= styled.div`
@@ -88,5 +84,4 @@ const SlideshowDot= styled.div`
     cursor: pointer;
     margin: 15px 5px;
     background-color: ${({ isActive }) => (!isActive ? "#E0E1DD" : "#778DA9")};
-
 `;

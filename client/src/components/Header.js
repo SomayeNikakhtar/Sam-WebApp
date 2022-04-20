@@ -47,14 +47,14 @@ const Header= ()=>{
                             (ev)=> {
                                 window.setTimeout(()=>{
                                     ev.target.checked=false
-                                }, 100)
+                                }, 300)
                                 }
                             }/>
                         <DropBtn for="dropcheck" > <AiOutlineMenu/> {myInfo.name} </DropBtn>
                         <Content>
                             <Link to="/my-ads" >My Ads</Link>
                             <Link to="/my-messages">My Messages</Link>
-                            <Link to="/my-favorites">My Favorites</Link>
+                            <Link to="/under-construction">My Favorites</Link>
                             <Link to="#" onClick={()=>doSignOut()}>Sign Out</Link>
                         </Content>
                     </DropDown>}
@@ -66,12 +66,13 @@ const Header= ()=>{
                         </>
                     }   
 
-                        <PostAd onClick={()=> {
-                            if (myInfo)
-                                History.push("/new")
-                            else
-                            History.push("/sign-in")    
-                                }}>Post ad</PostAd>
+                    <PostAd onClick={()=> {
+                        if (myInfo)
+                            History.push("/new")
+                        else
+                        History.push("/sign-in")    
+                            }}>Post ad
+                    </PostAd>
                         
                     
                 </RightSide>
@@ -85,7 +86,6 @@ export default Header;
 const HeadWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    width: 100vw;
     min-height: 80px;
     background-color: var(--primary-color);
     color: var(--gray-color);
@@ -117,7 +117,6 @@ const SignAction= styled(Link)`
     &:hover{
         color: var(--hover-color);
     }
-
 `;
 const RightSide=styled.div`
     font-weight: bold;
@@ -154,7 +153,7 @@ const PostAd=styled.button`
     margin-left: 20px;
     background-color: var(--gray-color);
     color: var(--primary-color);
-    padding: 5px;
+    padding: 10px;
     border: 1px solid var(--primary-color);
     border-radius: 1000px;
     font-weight: bold;
@@ -162,7 +161,7 @@ const PostAd=styled.button`
     &:hover{
         background-color: var(--hover-color);
     }
-`
+`;
 const DropBtn=styled.label`
     background-color: var(--gray-color);
     color: var(--primary-color);
@@ -172,7 +171,7 @@ const DropBtn=styled.label`
     position: relative;
     display:block;
     cursor:pointer;
-`
+`;
 const Dropcheck= styled.input`
     position: absolute;
     left: -9999px;
@@ -182,12 +181,11 @@ const Dropcheck= styled.input`
     &:checked + ${DropBtn} {
         background-color: var(--hover-color);
     }
-   
-`
+`;
 const Or=styled.div`
     color: var(--gray-color);
     text-decoration: none;
     margin-right: 10px;
     margin-left: 5px;
     align-self: center;
-`
+`;

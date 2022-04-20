@@ -7,9 +7,13 @@ const { getLocFromPlCode }=require("./externalApis")
 
 
 const getAds= async(req,res)=>{
-    const filters=req.body
-    // console.log(filters)
-    const ads=await db.loadAdsByFilter(filters)
+    let {filters, page, limit}=req.body
+    if (!filters)
+        filters={}
+    page = parseInt(page)
+    limit = parseInt(limit)
+    console.log(filters, page, limit)
+    const ads=await db.loadAdsByFilter(filters, page, limit)
     res.status(200).json({status: 200 , data: ads })
 }
 
@@ -124,12 +128,12 @@ const sendMessage=async(req, res)=>{
 }
 
 const getMyConversations= async(req, res)=>{
-    const conversation= await db.getConversations(req.user._id)
+    const conversation= await db.getConversations(req.user._id, req.body.date)
     res.status(200).json({status: 200, data:conversation })
 }
 
 const getMyMsgs=async(req, res)=>{
-    const messages= await db.getConversationMsgs(req.user._id, req.params.id)
+    const messages= await db.getConversationMsgs(req.user._id, req.params.id, req.body.date)
     res.status(200).json({status: 200, data:messages })
 
 }

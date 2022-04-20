@@ -1,6 +1,4 @@
-import { useParams } from "react-router-dom";
-
-const { createContext, useState, useEffect } = require("react");
+const { createContext, useState} = require("react");
 
 export const MsgContext=createContext(null)
 export const MsgProvider=({children})=>{

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { AdContext } from "./AdContext";
 import Filters from "./Filters";
 import TimeAgo from 'javascript-time-ago';
+import Loader from "./Loader";
 
 const AdsList=()=>{
     const timeAgo = new TimeAgo('en-US')
@@ -15,13 +16,13 @@ const AdsList=()=>{
       fetchAds({}, page, itemsPerPage)    
     },[page])
 
-    if (!ads) return <></>
+    if (!ads) return <Loader></Loader>
     return(
     <>
         <Wrapper>
-            <RightSide>
+            <LeftSide>
                 <Filters page={page} itemsPerPage={itemsPerPage}/>
-            </RightSide>
+            </LeftSide>
             <Main>
                 <Title>Rentals in Montreal, QC</Title>
                 <AdsContainer>
@@ -62,7 +63,6 @@ const Wrapper=styled.div`
     flex-grow: 1;
     padding: 10px;
     color: var(--text-color);
-    
 `;
 const Title = styled.div`
   color: var(--text-color);
@@ -70,18 +70,17 @@ const Title = styled.div`
   font-size: 25px;
   margin-bottom: 20px;
 `;
-const RightSide= styled.div`
+const LeftSide= styled.div`
     flex-basis: 10%;
     padding: 15px 20px 20px 10px;
     box-shadow:  -10px 60px 106px -14px rgba(184,178,184,1);
     border-radius: 10px;
-
 `;
 const Main=styled.div`
-    flex-basis: 90%;
+    /* flex-basis: 80%; */
     margin:5px;
     padding: 10px;
-    
+    max-width: 1000px;
 `;
 
 const AdsContainer = styled.div`
@@ -89,7 +88,6 @@ const AdsContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  width: 1000px;
   /* height: 100%; */
 `;
 
@@ -99,7 +97,7 @@ const ItemContainer = styled(Link)`
   justify-content: space-between;
   border-radius: 15px;
   padding: 20px 10px 0 10px;
-  margin: 0 25px 30px 0;
+  margin: 0 0px 30px 20px;
   width: 200px;
   height: 320px;
   text-decoration: none;
@@ -129,13 +127,13 @@ const Time=styled.p`
     color: #aaa;
     font-size: small;
     margin-bottom: 10px;
-`
+`;
 const Price=styled.p`
   font-weight: bold;
-`
+`;
 const Sub=styled.div`
   line-height: 20px;
-`
+`;
 
 const Browse = styled(Link)`
   display: flex;
@@ -145,24 +143,17 @@ const Browse = styled(Link)`
   padding: 5px;
   border-radius: 3px;
   font-size: bold;
-  font-optical-sizing: auto;
   text-decoration: none;
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   visibility: ${({ hide }) => (hide ? "hidden" : "visible")};
-  :hover {
+  &:hover {
     background-color: var(--hover-color);
-    text-decoration: none;
   }
 `;
-
 const FlexDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  /* width: 950px; */
-  /* height: 75px; */
-  /* font-family: sans-serif; */
-  /* font-size: 0.75em; */
 `;

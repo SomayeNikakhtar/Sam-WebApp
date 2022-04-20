@@ -13,12 +13,9 @@ const MapModal = ({onCloseFunc, center}) => {
       <GoogleMap
         bootstrapURLKeys={{key: REACT_APP_GOOGLE_APIKEY }} // set if you need stats etc ...
         center={center}
-       
         zoom={10}>
           <Marker lat={center[0]} lng={center[1]}></Marker>
-          {/* <SiGooglemaps lat={59.955413} lng={30.337844} size={"30px"} color={"red"}/> */}
-        
-      </GoogleMap>
+        </GoogleMap>
         <Button onClick={onCloseFunc}>close</Button>
       </Content>
     </Wrapper>
@@ -68,7 +65,7 @@ const Button = styled.button`
   }
 `;
 const Marker=styled.div`
-   position: absolute;
+    position: absolute;
     top: 50%;
     left: 50%;
     width: 18px;
@@ -82,5 +79,5 @@ const Marker=styled.div`
     &:hover {
       z-index: 1;
     }
-`
+`;
 export default MapModal;

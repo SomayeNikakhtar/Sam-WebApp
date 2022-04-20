@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 
 const ImgPv = ({onImgsChanged}) => {
-  // const [selectedFiles, setSelectedFiles] = useState([]);
   const [dataTransfer, setDataTransfer] = useState({dt: new DataTransfer()});
   const inputFiles = useRef()
 
@@ -18,10 +17,9 @@ const ImgPv = ({onImgsChanged}) => {
     return filesArray;
   }
   const handleImageChange = (e) => {
-    // dataTransfer.items.clear()
-    for (let file of e.target.files) {
-		  dataTransfer.dt.items.add(file);
-	  }
+      for (let file of e.target.files) {
+        dataTransfer.dt.items.add(file);
+      }
     setDataTransfer({dt:dataTransfer.dt})
     onImgsChanged(dataTransfer.dt)
   };
@@ -45,8 +43,6 @@ const ImgPv = ({onImgsChanged}) => {
   };
   const selectedFiles = getFiles();
   return (
-    
-    
       <div>
         <input  type="file" id="file" multiple onChange={handleImageChange} ref={inputFiles} hidden />
         <Holder >
@@ -56,7 +52,6 @@ const ImgPv = ({onImgsChanged}) => {
         </Holder>
         <Result >{renderPhotos(selectedFiles)}</Result>
       </div>
-    
   );
 };
 
@@ -69,7 +64,7 @@ const Holder= styled.div`
     display: grid;
     place-items: center;
     
-`
+`;
 const Label = styled.label`
     height: 50px;
     width: 150px;
@@ -80,12 +75,11 @@ const Label = styled.label`
     font-size: 2rem ;
     cursor: pointer;
     border-radius: 3px;
-`
+`;
 const Result= styled.div`
     min-height: 100%;
     max-height: auto;
     width: 100%;
-    /* background-color: #272c34; */
     margin-top:1rem ;
     display: flex;
     flex-wrap: wrap;
@@ -96,17 +90,17 @@ const Result= styled.div`
 const ImgContainer =styled.div`
     position: relative;
     margin: 0.75rem;
-`
+`;
 
 const Image= styled.img`
     width: 320px;
     height: 180px;
     object-fit: cover;
-`
+`;
 
 const Close =styled(AiOutlineCloseCircle)`
     cursor: pointer;
     position: absolute;
     top: 3px;
     right: 3px;
-`
+`;

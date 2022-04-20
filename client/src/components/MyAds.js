@@ -5,6 +5,7 @@ import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import TimeAgo from 'javascript-time-ago';
+import Loader from "./Loader";
 
 
 const MyAds=()=>{
@@ -42,7 +43,7 @@ const MyAds=()=>{
         })
     }
 
-    if(!myAdDetails) return<></>
+    if(!myAdDetails) return<Loader></Loader>
     return(
         <Wrapper>
             <Wrapper2>
@@ -54,26 +55,29 @@ const MyAds=()=>{
             </Wrapper2>
             {myAdDetails.map((el, ind)=>{
                 return(
+                    <>
                     <Ad key={el._id} onClick={()=>{History.push(`/advertisement-details/${el._id}`)}}>
                         <Title>
                         <Title>{el.title}</Title>
                         <Time>{timeAgo.format(new Date(el.date), 'round-minute')}</Time>
+                        <div>
+                            <EditIcon size="20" onClick={(ev)=>{
+                                ev.stopPropagation();
+                                History.push("/under-construction")
+                            }}/>
+                            <DeleteIcon size="20" onClick={(ev)=>{
+                                deleteAd(el._id, ind);
+                                ev.stopPropagation();
+                            }}/>
+                        </div>
                         </Title>
-                        
-                        <EditIcon size="20" onClick={(ev)=>{
-                            ev.stopPropagation();
-                            History.push("/under-construction")
-                        }}/>
-                        <DeleteIcon size="20" onClick={(ev)=>{
-                            deleteAd(el._id, ind);
-                            ev.stopPropagation();
-                        }}/>
                         <Image src={el.images[0]}></Image>
-
+                        
                     </Ad>
+                    
+                    </>
                 )
             }
-
             )}
             
         </Wrapper>
@@ -121,20 +125,15 @@ const Ad= styled.div`
 
 const Icons=styled.div`
     cursor: pointer;
-        &:hover {
-    
-        }
-`
+`;
 const AdIcon=styled(RiAdvertisementFill)`
     cursor: pointer;
     color: blue;
-
-`
+`;
 const PlusIcon= styled(AiOutlinePlus)`
     cursor: pointer;
     color: blue;
-    
-`
+`;
 const Title=styled.div`
     align-self: center;
     font-size: 18px;
@@ -148,13 +147,24 @@ const Image=styled.img`
 const DeleteIcon=styled(AiOutlineDelete)`
     align-self: center;
     cursor: pointer;
-`
+    &:hover{
+        background-color: var( --hover-color);
+    }
+`;
 const EditIcon=styled(BiEdit)`
     align-self: center;
     cursor: pointer ;
-`
+    &:hover{
+        background-color: var( --hover-color);
+    }
+`;
 const Time=styled.p`
     color: #aaa;
     font-size: 15px;
     margin-top: 10px;
+    margin-bottom: 10px;
+`;
+const FlexDiv= styled.div`
+    display: flex;
+    flex-direction: column;
 `

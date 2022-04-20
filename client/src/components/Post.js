@@ -1,8 +1,6 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { AdContext } from "./AdContext";
-
 import ImgPv from "./ImgPv";
 
 const Post= ()=>{
@@ -17,7 +15,7 @@ const Post= ()=>{
         const filesArray = Array.from(dataTransfer.dt.files).map(file =>
             URL.createObjectURL(file)
         );
-        console.log(filesArray)
+        // console.log(filesArray)
         const uploadedImgs=[]
         for (const img of filesArray){
             console.log(img)
@@ -66,7 +64,6 @@ const Post= ()=>{
                 console.log(err)
         })
 
-        
     }
 
     
@@ -255,12 +252,12 @@ const Post= ()=>{
 }
 export default Post;
 const Titre = styled.div`
-  color: var(--text-color);
-  font-weight: bold;
-  font-size: 25px;
-  margin: 20px 10px 5px 10px;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 25px;
+    margin: 20px 10px 5px 10px;
 `;
-    const Liner = styled.div`
+const Liner = styled.div`
     height: 1px;
     background: #ccc;
     margin-bottom: 15px;
@@ -285,8 +282,7 @@ const Textarea=styled.textarea`
     border: 1px solid var(--primary-color);
     border-radius: 3px;
     min-width: 250px;
-
-`
+`;
 const Button=styled.button`
     background-color: var(--text-alter);
     border: none;
@@ -295,24 +291,24 @@ const Button=styled.button`
     padding: 8px;
     margin-top: 10px;
     font-size: 18px;
-`
+`;
 const FlexDiv4=styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
 const Title=styled.span`
     font-weight: bold;
     font-size: 19px;
-`
+`;
 const P=styled.p`
     font-weight: bold;
     color: var(--primary-color);
     font-size: 17px;
-`
+`;
 const OptionsContainer=styled.div`
     color: var(--text-alter);
-`
+`;
 const AdjustForm = styled.div`
     display:grid;
     grid-template-columns: max-content max-content;
@@ -320,5 +316,4 @@ const AdjustForm = styled.div`
     label {
         text-align:center;
     }
-
-`
+`;

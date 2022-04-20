@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { RiAdvertisementFill,  } from "react-icons/ri";
-import { Link, useHistory } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
 import { useContext, useEffect } from "react";
 import { MsgContext } from "./MsgContext";
 import TimeAgo from 'javascript-time-ago';
+import Loader from "./Loader";
 
 const MyMsgs=()=>{
     const timeAgo = new TimeAgo('en-US')
@@ -25,7 +26,7 @@ const MyMsgs=()=>{
     }, [myConversations])
 
 
-    if (!myConversations) return <></>
+    if (!myConversations) return <Loader></Loader>
     return(
         <Wrapper>
             <Wrapper2>
@@ -87,22 +88,6 @@ const Msg= styled(Link)`
     color: var(--primary-color);
 `;
 
-const Icons=styled.div`
-    cursor: pointer;
-        &:hover {
-    
-        }
-`
-const AdIcon=styled(RiAdvertisementFill)`
-    cursor: pointer;
-    color: blue;
-
-`
-const PlusIcon= styled(AiOutlinePlus)`
-    cursor: pointer;
-    color: blue;
-    
-`
 const Title=styled.div`
     align-self: center;
     font-weight: bold;
@@ -116,13 +101,13 @@ const Image=styled.img`
 const DeleteIcon=styled(AiOutlineDelete)`
     align-self: center;
     cursor: pointer;
-`
+`;
 const MsgPrev=styled.p`
     color: var(--text-alter);
     margin-top: 7px;
-`
+`;
 const Time=styled.p`
     color: #aaa;
     font-size: 15px;
     margin-top: 10px;
-`
+`;
