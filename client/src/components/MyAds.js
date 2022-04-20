@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import TimeAgo from 'javascript-time-ago';
 import Loader from "./Loader";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 
 const MyAds=()=>{
@@ -42,6 +44,24 @@ const MyAds=()=>{
                 console.log(err)
         })
     }
+    const ConfirmDelete = (id, ind) => {
+
+        confirmAlert({
+          title: 'Confirm to Delete',
+          message: 'Are you sure to do this?',
+          buttons: [
+            {
+              label: 'Yes',
+              onClick: () => deleteAd(id, ind)
+            },
+            {
+              label: 'No',
+            //   onClick: () => alert('Click No')
+            }
+          ]
+        });
+      }
+
 
     if(!myAdDetails) return<Loader></Loader>
     return(
@@ -66,7 +86,7 @@ const MyAds=()=>{
                                 History.push("/under-construction")
                             }}/>
                             <DeleteIcon size="20" onClick={(ev)=>{
-                                deleteAd(el._id, ind);
+                                ConfirmDelete(el._id, ind)
                                 ev.stopPropagation();
                             }}/>
                         </div>
