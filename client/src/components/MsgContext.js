@@ -50,8 +50,10 @@ export const MsgProvider=({children})=>{
         })
         .then (res=> {
             const obj={};
-            if (res.data.length==0)
+            if (res.data.length==0){
+                setMyConversations(res.data)
                 return;
+            }
             console.log(res.data)
             myConversations?.forEach((el)=>obj[el._id]=el)
             
