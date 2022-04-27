@@ -51,7 +51,8 @@ export const MsgProvider=({children})=>{
         .then (res=> {
             const obj={};
             if (res.data.length==0){
-                setMyConversations(res.data)
+                if (myConversations===null)
+                    setMyConversations(res.data)
                 return;
             }
             console.log(res.data)
@@ -95,7 +96,8 @@ export const MsgProvider=({children})=>{
         })
         .then (res=> {
             // console.log(res.data)
-            setMyMsg([...MyMsgs, ...res.data])
+            if (res.data.length>0)
+                setMyMsg([...MyMsgs, ...res.data])
 
         })
         .catch(err=>console.error(err))

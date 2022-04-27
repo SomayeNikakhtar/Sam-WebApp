@@ -40,12 +40,19 @@ const SingleConversations=()=>{
         return ()=> {clearInterval(IntervalId)}
     }, [MyMsgs])
 
+    const handleSend=()=>{
+        if(textareaRef.current.value.length>0){
+            sendMsg({receiver: receiver, content: textareaRef.current.value, adId:thisConversation.adId})
+            textareaRef.current.value=""
+        }
+    }
+
 
     if (!MyMsgs || !thisConversation || !myInfo ) return <Loader></Loader>
     
     
-    const receiver=myInfo._id===thisConversation.user1  ? thisConversation.user2 : thisConversation.user1
-
+    const receiver=myInfo.email===thisConversation.user1  ? thisConversation.user2 : thisConversation.user1
+    console.log(myInfo, receiver, thisConversation)
     return(
         <Wrapper>
             <Wrapper2>
@@ -72,12 +79,12 @@ const SingleConversations=()=>{
                 })}
             </MsgBox>
             <FlexDiv>
-                <Textarea ref={textareaRef} placeholder="Type a message..." rows="3"></Textarea>
-                <Send onClick={()=>
-                    {
-                        sendMsg({receiver: receiver, content: textareaRef.current.value, adId:thisConversation.adId})
-                        textareaRef.current.value=""
-                    }}>send</Send>
+                <Textarea ref={textareaRef} placeholder="Type a message..." rows="3" required 
+                onKeyDown={(ev)=>{
+                    if (ev.key==='Enter')
+                        handleSend()
+                }}></Textarea>
+                <Send onClick={()=>handleSend()}>send</Send>
             </FlexDiv>
         </Wrapper>
     )
